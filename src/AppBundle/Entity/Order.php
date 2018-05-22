@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="order")
  */
-class Order
+class order
 {
     /**
      * @ORM\Id
@@ -17,17 +17,16 @@ class Order
      */
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="order")
-     * @ORM\JoinColumn(name="us erId", referencedColumnName="id")
-     **/
-    protected $userId;
+    private $user;
 
-//    /**
-//     * @ORM\OneToOne(targetEntity="Basket", inversedBy="order")
-//     * @ORM\JoinColumn(name="basketId", referencedColumnName="id")
-//     **/
-//    protected $basketId;
+    private $products;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="OrderDelivary", inversedBy="Order")
+     * @ORM\JoinColumn(name="delivary",referencedColumnName="id")
+     */
+    private $delivary;
+
     /**
      * @return mixed
      */
@@ -36,42 +35,56 @@ class Order
         return $this->id;
     }
 
-//    /**
-//     * @return mixed
-//     */
-//    public function getBasketId()
-//    {
-//        return $this->basketId;
-//    }
-//
-//    /**
-//     * @param mixed $basketId
-//     */
-//    public function setBasketId($basketId)
-//    {
-//        $this->basketId = $basketId;
-//    }
-
     /**
-     * @param mixed $userId
-     * @return Order
+     * @param $user
      */
-    public function setUserId($userId)
+    public function setUser($user)
     {
-        $this->userId = $userId;
-        return $this;
+        $this->user = $user;
     }
 
     /**
      * @return mixed
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
+    }
+
+    /**
+     * @param $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProducts()
+    {
+        return $this->products;
     }
 
     public function __toString()
     {
-        return "name of order";
+        return (string) $this->user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDelivary()
+    {
+        return $this->delivary;
+    }
+
+    /**
+     * @param mixed $delivary
+     */
+    public function setDelivary($delivary)
+    {
+        $this->delivary = $delivary;
     }
 }

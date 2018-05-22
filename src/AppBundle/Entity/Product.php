@@ -39,11 +39,15 @@ class Product
     private $category;
 
 /////////////////
+
     /**
-     * @ORM\ManyToOne(targetEntity="Basket", inversedBy="productId")
-     * @ORM\JoinColumn(name="basket", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Cart", mappedBy="products")
      **/
     private $basket;
+
+    public function __construct() {
+        $this->basket = new ArrayCollection();
+    }
 ////////////////
     /**
      * @return mixed
@@ -126,14 +130,6 @@ class Product
     public function setCategory($category)
     {
         $this->category = $category;
-    }
-
-    /**
-     * @param mixed $basket
-     */
-    public function setBasket($basket)
-    {
-        $this->basket = $basket;
     }
 
     /**

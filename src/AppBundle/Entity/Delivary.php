@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="delivery")
  */
-class Delivery
+class Delivary
 {
     /**
      * @ORM\Id
@@ -19,6 +19,8 @@ class Delivery
 
     /**
      * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="OrderDelivary", inversedBy="delivary")
+     * @ORM\JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
 

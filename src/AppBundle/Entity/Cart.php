@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="basket")
+ * @ORM\Table(name="cart")
  */
-class Basket
+class Cart
 {
     /**
      * @ORM\Id
@@ -18,17 +18,16 @@ class Basket
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="basket")
+     * @ORM\OneToOne(targetEntity="User", inversedBy="cart")
      * @ORM\JoinColumn(name="user", referencedColumnName="id")
      **/
     private $user;
-/////////////////////////////////
+
     /**
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="basket")
-     * @ORM\JoinTable(name="products_basket")
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="cart")
+     * @ORM\JoinTable(name="products_cart")
      */
     private $products;
-////////////////////////////////////
 
     /**
      * @return mixed

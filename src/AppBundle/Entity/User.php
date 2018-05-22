@@ -17,53 +17,41 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    /**
-     * @ORM\OneToOne(targetEntity="Basket", mappedBy="userId")
-     */
-    private $basket;
 
     /**
-     * @ORM\OneToMany(targetEntity="Order", mappedBy="userId")
-     **/
-    private $order;
+     * @ORM\OneToOne(targetEntity="Cart", mappedBy="user")
+     * @ORM\Column(nullable=true)
+     */
+    private $cart;
 
     public function __construct()
     {
         parent::__construct();
-        $this->order= new ArrayCollection();
+        $this->cart= new ArrayCollection();
     }
 
     /**
      * @return mixed
      */
-    public function getBasket()
+    public function getcart()
     {
-        return $this->basket;
+        return $this->cart;
     }
 
     /**
-     * @param mixed $basket
+     * @param mixed $cart
      */
-    public function setBasket($basket)
+    public function setcart($cart)
     {
-        $this->basket = $basket;
-    }
-
-    /**
-     * @param mixed $order
-     * @return User
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-        return $this;
+        $this->cart = $cart;
     }
 
     /**
      * @return mixed
      */
-    public function getOrder()
+    public function getId()
     {
-        return $this->order;
+        return $this->id;
     }
+
 }

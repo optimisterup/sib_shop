@@ -112,6 +112,7 @@ class Category
     /**
      * Add child
      *
+     * @param $child
      * @return Category
      */
     public function addChild( $child)
@@ -123,7 +124,7 @@ class Category
 
     /**
      * Remove child
-     *
+     * @param $child
      */
     public function removeChild($child)
     {
