@@ -26,31 +26,31 @@ class Product
      */
     private $image;
 
-    /**
-     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
-     * @var File
-     */
-    private $imageFile;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @var \DateTime
-     */
-    private $updatedAt;
-
-    public function setImageFile(File $image = null)
-    {
-        $this->imageFile = $image;
-
-        if ($image) {
-            $this->updatedAt = new \DateTime('now');
-        }
-    }
-
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
+//    /**
+//     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
+//     * @var File
+//     */
+//    private $imageFile;
+//
+//    /**
+//     * @ORM\Column(type="datetime")
+//     * @var \DateTime
+//     */
+//    private $updatedAt;
+//
+//    public function setImageFile(File $image = null)
+//    {
+//        $this->imageFile = $image;
+//
+//        if ($image) {
+//            $this->updatedAt = new \DateTime('now');
+//        }
+//    }
+//
+//    public function getImageFile()
+//    {
+//        return $this->imageFile;
+//    }
 
     public function setImage($image)
     {
