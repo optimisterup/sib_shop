@@ -7,7 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-
+    app.path.product_images: /uploads/images/products
 framework:
     #esi: ~
     translator: { fallbacks: [en] } # необходимо включить переводчик для корректного отображения страниц
@@ -112,6 +112,19 @@ easy_admin:
                     - price
                     - category
                     - basket
+                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+            form:
+                fields:
+                    - name
+                    - description
+                    - price
+                    - category
+                    - basket
+                    - { property: 'imageFile', type: 'vich_image' }
+
+            show:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
         Basket:
             class: AppBundle\Entity\Cart
             list:
@@ -159,3 +172,10 @@ easy_admin:
 #                    - id
 #                    - userId
 #                    - basketId
+vich_uploader:
+    db_driver: orm
+    mappings:
+            product_images:
+                uri_prefix:         '%app.path.product_images%'
+                upload_destination: '%kernel.root_dir%/../web/uploads/images/products'
+
