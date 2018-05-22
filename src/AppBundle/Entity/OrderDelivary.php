@@ -33,7 +33,6 @@ class OrderDelivary
         $this->delivary= new ArrayCollection();
     }
 
-
     /**
      * @ORM\Column(type="string")
      */
