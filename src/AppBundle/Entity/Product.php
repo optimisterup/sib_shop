@@ -20,47 +20,7 @@ class Product
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
-     */
     private $image;
-
-//    /**
-//     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
-//     * @var File
-//     */
-//    private $imageFile;
-//
-//    /**
-//     * @ORM\Column(type="datetime")
-//     * @var \DateTime
-//     */
-//    private $updatedAt;
-//
-//    public function setImageFile(File $image = null)
-//    {
-//        $this->imageFile = $image;
-//
-//        if ($image) {
-//            $this->updatedAt = new \DateTime('now');
-//        }
-//    }
-//
-//    public function getImageFile()
-//    {
-//        return $this->imageFile;
-//    }
-
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
-
-    public function getImage()
-    {
-        return $this->image;
-    }
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -83,8 +43,6 @@ class Product
      **/
     private $category;
 
-/////////////////
-
     /**
      * @ORM\ManyToMany(targetEntity="Cart", mappedBy="products")
      **/
@@ -92,8 +50,9 @@ class Product
 
     public function __construct() {
         $this->basket = new ArrayCollection();
+//        $this->media = new ArrayCollection();
     }
-////////////////
+
     /**
      * @return mixed
      */
@@ -185,20 +144,22 @@ class Product
         return $this->basket;
     }
 
+
+
     /**
-     * @return \DateTime
+     * @return mixed
      */
-    public function getUpdatedAt()
+    public function getImage()
     {
-        return $this->updatedAt;
+        return $this->image;
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param mixed $image
      */
-    public function setUpdatedAt($updatedAt)
+    public function setImage($image): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->image = $image;
     }
 
 }

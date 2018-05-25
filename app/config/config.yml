@@ -112,7 +112,8 @@ easy_admin:
                     - price
                     - category
                     - basket
-                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+#                    - media
+#                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
             form:
                 fields:
                     - name
@@ -120,11 +121,12 @@ easy_admin:
                     - price
                     - category
                     - basket
-                    - { property: 'imageFile', type: 'vich_image' }
+#                    - media
+#                    - { property: 'imageFile', type: 'vich_image' }
 
-            show:
-                fields:
-                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+#            show:
+#                fields:
+#                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
         Basket:
             class: AppBundle\Entity\Cart
             list:
@@ -165,13 +167,32 @@ easy_admin:
                     - roles
                     - order
                     - cart
+        Media:
+              class: AppBundle\Entity\Media
+              list:
+                  fields:
+                      - id
+#                      - product
+                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
+#                      - imageFile
+#                      - updatedAt
+              form:
+                  fields:
+#                      - product
+#                      - imageFile
+                      - { property: 'imageFile', type: 'vich_image', label: 'Upload logo', help: 'Select file to upload / change logo' }
+              show:
+                  fields:
+                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+#                      - updatedAt
 #        Order:
 #            class: AppBundle\Entity\Order
 #            list:
 #                fields:
 #                    - id
-#                    - userId
-#                    - basketId
+#                    - user
+#                    - products
+#                    - delivary
 vich_uploader:
     db_driver: orm
     mappings:

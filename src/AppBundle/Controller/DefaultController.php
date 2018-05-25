@@ -20,16 +20,4 @@ class DefaultController extends Controller
         ]);
     }
 
-//    /**
-//     * @Route("/admin", name="admin")
-//     */
-//    public function adminAction(Request $request)
-//    {
-//        return $this->render('', [
-//            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-//        ]);
-//    }
-
-
-
 }

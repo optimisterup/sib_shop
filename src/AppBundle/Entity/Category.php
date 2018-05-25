@@ -45,13 +45,11 @@ class Category
         $this->product = new ArrayCollection();
     }
 
-    /////////////////////
-
     /**
      * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
      **/
     private $product;
-    /////////////////////////////
+
     /**
      * @param mixed $id
      * @return Category
