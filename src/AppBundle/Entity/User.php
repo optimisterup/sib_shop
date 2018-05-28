@@ -23,6 +23,11 @@ class User extends BaseUser
      * @ORM\Column(nullable=true)
      */
     private $cart;
+    /**
+    * @ORM\OneToOne(targetEntity="UserMedia")
+    * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
+    */
+    private $media;
 
     public function __construct()
     {
@@ -54,4 +59,32 @@ class User extends BaseUser
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+    /**
+     * @param UserMedia $media
+     * @return $this
+     */
+    public function setMedia($media)
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+
+
+//    /**
+//     * @return mixed
+//     */
+//    public function getImage()
+//    {
+//        return $this->image;
+//    }
 }

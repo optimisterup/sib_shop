@@ -28,6 +28,11 @@ services:
         resource: '../../src/AppBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+    app.form.profile:
+            class: AppBundle\Form\ProfileFormType
+            tags:
+                - { name: form.type, alias: app_user_profile }
+
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:

@@ -32,3 +32,28 @@ fos
 login через соц сети
 
 crud в админке на все сущности
+
+    # добавить
+    # https://symfony.com/doc/3.3/form/data_transformers.html
+    # https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/namers.md
+    # метод в сущностях getFolderName
+
+
+Переопределить SecurityController(FOS) редирект в зависимости от роли
+
+Поменять путь куда складываются картинки
+
+	вместо '%kernel.root_dir%/../web/uploads/images/products'
+	сделай '%kernel.root_dir%/../web/uploads/images/products/	категории_которой_принадлежит_продукт'
+
+				то есть чтобы картинки были сгруппированы в директориях по категориям
+
+		картинки продукта
+		картинка категории
+		картинка юзера
+
+сущность Media, MediaType в MediaType будет тип контента image или video
+
+		Например тебе нужно видео срендерить на страницесоответствено у тебя в базе лежит просто имя файлаи если это картинка то ты имя файла подставляешь в <img src>а если там видео то ты будешь рисовать <video>
+
+

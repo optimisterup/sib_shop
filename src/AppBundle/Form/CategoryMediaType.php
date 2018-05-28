@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use AppBundle\Entity\UserMedia;
 
-class UserMediaType extends AbstractType
+class CategoryMediaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,7 +22,7 @@ class UserMediaType extends AbstractType
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '\AppBundle\Entity\UserMedia',
+            'data_class' => '\AppBundle\Entity\CategoryMedia',
         ));
     }
 }

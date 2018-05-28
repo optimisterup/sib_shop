@@ -6,30 +6,29 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity
+ * @Vich\Uploadable
  */
 class ProductMedia extends Media
 {
-    private $product;
-
     /**
-     * @return mixed
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
+     * @var File
      */
-    public function getProduct()
+    private $imageFile;
+
+    public function setImageFile(File $image = null)
     {
-        return $this->product;
+        $this->imageFile = $image;
     }
 
-    /**
-     * @param mixed $product
-     */
-    public function setProduct($product): void
+    public function getImageFile()
     {
-        $this->product = $product;
+        return $this->imageFile;
     }
-
 
 }
 

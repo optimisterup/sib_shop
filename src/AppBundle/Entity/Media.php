@@ -11,10 +11,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="media")
- * @Vich\Uploadable
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"user"="User", "product_media"="ProductMedia", "category_media"="CategoryMedia","user_media"="UserMedia"})
  */
-class Media
+Abstract class Media
 {
     /**
      * @ORM\Id
@@ -28,22 +29,6 @@ class Media
      * @var string
      */
     private $image;
-
-    /**
-     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
-     * @var File
-     */
-    private $imageFile;
-
-    public function setImageFile(File $image = null)
-    {
-        $this->imageFile = $image;
-    }
-
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
 
     public function setImage($image)
     {

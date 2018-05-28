@@ -12,10 +12,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class ProductMedia extends Media
+class CategoryMedia extends Media
 {
     /**
-     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
+     * @Vich\UploadableField(mapping="category_images", fileNameProperty="image")
      * @var File
      */
     private $imageFile;

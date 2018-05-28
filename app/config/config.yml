@@ -8,6 +8,8 @@ imports:
 parameters:
     locale: en
     app.path.product_images: /uploads/images/products
+    app.path.category_images: /uploads/images/category
+    app.path.user_images: /uploads/images/users
 framework:
     #esi: ~
     translator: { fallbacks: [en] } # необходимо включить переводчик для корректного отображения страниц
@@ -88,7 +90,9 @@ fos_user:
     registration:
         confirmation:
             template:   '@FOSUser/Registration/email.txt.twig'
-
+#    profile:
+#        form:
+#            type: AppBundle\Form\ProfileFormType
 easy_admin:
     entities:
         # change the following to the namespaces of your own entities
@@ -113,7 +117,7 @@ easy_admin:
                     - category
                     - basket
 #                    - media
-#                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
+                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
             form:
                 fields:
                     - name
@@ -136,39 +140,40 @@ easy_admin:
                     - productId
                     - order
         User:
-            class: AppBundle\Entity\User
-            expot_path: '%kernel.root_dir/../var/export/user'
-            password_encoding: {algoritm: 'bcrypt'}
-            form:
-                fields:
-                  - 'username'
-                  - 'email'
-                  - 'enabled'
-                  - {property: 'plainPassword', type: 'text', type_options: {required:false}}
-                  - {property: 'roles', type: 'choice', type_options: {multiple: true, choices: {'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' }}}
-#                 -
-#            new:
-#                fields:
-#
-#            edit:
-#                fields:
-            list:
-                fields:
-                    - id
-                    - username
-                    - usernameCanonical
-                    - email
-                    - enabled
-                    - plainPassword
-#                    - {property: 'plainPassword', type: 'text', type_options: {required:false}}
-#                    - {property: 'roles', type: 'choice', type_options: {multiple: true, choices: {'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' }}}
-                    - password
-                    - basket
-                    - roles
-                    - order
-                    - cart
+              class: AppBundle\Entity\User
+              expot_path: '%kernel.root_dir/../var/export/user'
+              password_encoding: {algoritm: 'bcrypt'}
+              form:
+    #              type: AppBundle\Form\ProfileFormType
+                      fields:
+                        - 'username'
+                        - 'email'
+                        - 'enabled'
+    #                    - 'image'
+                        - {property: 'plainPassword', type: 'text', type_options: {required:false}}
+                        - {property: 'roles', type: 'choice', type_options: {multiple: true, choices: {'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' }}}
+                        - {property: 'media', type: 'AppBundle\Form\MediaType', label: 'Upload logo', help: 'Select file to upload / change logo' }
+#              list:
+#                  fields:
+#                      - id
+#                      - username
+##                      - usernameCanonical
+#                      - email
+#                      - enabled
+#                      - plainPassword
+##                      - image
+##                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
+#                      - password
+#                      - basket
+#                      - roles
+#                      - order
+#                      - cart
+#                      - media
+#              show:
+#                  fields:
+#                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
         Media:
-              class: AppBundle\Entity\Media
+              class: AppBundle\Entity\UserMedia
               list:
                   fields:
                       - id
@@ -184,6 +189,7 @@ easy_admin:
               show:
                   fields:
                       - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+
 #                      - updatedAt
 #        Order:
 #            class: AppBundle\Entity\Order
@@ -196,7 +202,12 @@ easy_admin:
 vich_uploader:
     db_driver: orm
     mappings:
-            product_images:
-                uri_prefix:         '%app.path.product_images%'
-                upload_destination: '%kernel.root_dir%/../web/uploads/images/products'
-
+        product_images:
+            uri_prefix:         '%app.path.product_images%'
+            upload_destination: '%kernel.root_dir%/../web/uploads/images/products'
+        category_images:
+            uri_prefix:         '%app.path.category_images%'
+            upload_destination: '%kernel.root_dir%/../web/uploads/images/category'
+        user_images:
+            uri_prefix:         '%app.path.user_images%'
+            upload_destination: '%kernel.root_dir%/../web/uploads/images/users'
