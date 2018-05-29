@@ -19,19 +19,19 @@ class ProfileFormType extends AbstractType
                 'allow_delete'  => true,
                 'by_reference'  => false
             ));
-        dump('asd');die;
-        $builder->remove('media');
+//        dump('asd');die;
+//        $builder->remove('media');
     }
 
-    public function getParent()
-    {
-        return 'FOS\UserBundle\Form\Type\ProfileFormType';
-    }
+//    public function getParent()
+//    {
+//        return 'FOS\UserBundle\Form\Type\ProfileFormType';
+//    }
 
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '\AppBundle\Entity\Media',
+            'data_class' => '\AppBundle\Entity\ProductMedia',
         ));
     }
 
