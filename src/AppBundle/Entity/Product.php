@@ -48,9 +48,14 @@ class Product
      **/
     private $basket;
 
+    /**
+     * @ORM\OneToOne(targetEntity="ProductMedia", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
+     */
+    private $media;
+
     public function __construct() {
         $this->basket = new ArrayCollection();
-//        $this->media = new ArrayCollection();
     }
 
     /**
@@ -144,7 +149,23 @@ class Product
         return $this->basket;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
 
+    /**
+     * @return $this
+     */
+    public function setMedia($media)
+    {
+        $this->media = $media;
+
+        return $this;
+    }
 
     /**
      * @return mixed

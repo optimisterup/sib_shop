@@ -2,7 +2,6 @@
 
 
 namespace AppBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\File;
@@ -20,7 +19,7 @@ class UserMedia extends Media
      */
     private $imageFile;
 
-    public function setImageFile(File $image = null)
+    public function setImageFile($image)
     {
         $this->imageFile = $image;
     }

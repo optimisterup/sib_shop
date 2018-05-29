@@ -1,43 +1,45 @@
 <?php
+
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Media;
+use AppBundle\Form\DataTransformer\ArrayToObjectTransformer;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
-use AppBundle\Entity\UserMedia;
+use AppBundle\Entity\Media;
+use Symfony\Component\Form\CallbackTransformer;
 
-class ProfileFormType extends AbstractType
+class UserMediaType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('media', MediaType::class, array(
-                'required'      => true,
-                //'mapped'       => 'product',
-                'allow_delete'  => true,
-                'by_reference'  => false
-            ));
-//        dump('asd');die;
-//        $builder->remove('media');
-    }
-
-//    public function getParent()
+//    private $transformer;
+//
+//    public function __construct(EntityManager $manager)
 //    {
-//        return 'FOS\UserBundle\Form\Type\ProfileFormType';
+//        $this->transformer = new ArrayToObjectTransformer($manager);
 //    }
 
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+
+        $builder
+            ->add('imageFile', VichImageType::class, array(
+                'required' => true,
+//                'mapped'       => 'product',
+                'allow_delete' => true,
+                'by_reference' => false,
+//                'invalid_message' => 'That is not a valid issue number',
+            ));
+        /*$builder->get('imageFile')
+            ->addModelTransformer($this->transformer);*/
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '\AppBundle\Entity\ProductMedia',
+            'data_class' => '\AppBundle\Entity\UserMedia',
+            'virtual' => true,
         ));
     }
-
-    public function getBlockPrefix()
-    {
-        return 'fos_user_profile';
-    }
-
 }

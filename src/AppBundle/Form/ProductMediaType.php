@@ -12,17 +12,18 @@ class ProductMediaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image', VichImageType::class, array(
+            ->add('imageFile', VichImageType::class, array(
                 'required'      => true,
                 //'mapped'       => 'product',
                 'allow_delete'  => true,
                 'by_reference'  => false
             ));
     }
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => '\AppBundle\Entity\ProductMedia',
+            'virtual' => true,
         ));
     }
 }

@@ -25,6 +25,12 @@ Abstract class Media
     protected $id;
 
     /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @var string
      */
@@ -33,6 +39,10 @@ Abstract class Media
     public function setImage($image)
     {
         $this->image = $image;
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
     }
 
     public function getImage()

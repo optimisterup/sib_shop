@@ -23,7 +23,7 @@ class MediaType extends AbstractType
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '\AppBundle\Entity\UserMedia',
+            'data_class' => '\AppBundle\Entity\Media',
         ));
     }
 }

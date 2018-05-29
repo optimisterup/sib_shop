@@ -23,8 +23,9 @@ class User extends BaseUser
      * @ORM\Column(nullable=true)
      */
     private $cart;
+
     /**
-    * @ORM\OneToOne(targetEntity="UserMedia")
+    * @ORM\OneToOne(targetEntity="UserMedia", cascade={"persist", "remove"})
     * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
     */
     private $media;
@@ -68,7 +69,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param UserMedia $media
+     * @param $media
      * @return $this
      */
     public function setMedia($media)

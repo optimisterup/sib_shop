@@ -39,6 +39,12 @@ class Category
      **/
     private $parent;
 
+    /**
+     * @ORM\OneToOne(targetEntity="CategoryMedia", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
+     */
+    private $media;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -166,6 +172,24 @@ class Category
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * @param mixed $media
+     * @return Category
+     */
+    public function setMedia($media)
+    {
+        $this->media = $media;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 
 
