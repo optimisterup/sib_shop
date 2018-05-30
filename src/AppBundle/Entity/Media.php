@@ -31,7 +31,7 @@ Abstract class Media
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
      */
     private $image;
@@ -40,8 +40,7 @@ Abstract class Media
     {
         $this->image = $image;
         if ($image) {
-            // if 'updatedAt' is not defined in your entity, use another property
-            $this->updatedAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime('now');
         }
     }
 

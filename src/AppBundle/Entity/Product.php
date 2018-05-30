@@ -48,14 +48,31 @@ class Product
      **/
     private $basket;
 
+//    /**
+//     * @ORM\OneToOne(targetEntity="ProductMedia", cascade={"persist", "remove"})
+//     * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
+//     */
+
+//    /**
+//     * Many Users have Many Groups.
+//     * @var ArrayCollection
+//     * @ORM\ManyToMany(targetEntity="ProductMedia")
+//     */
+
     /**
-     * @ORM\OneToOne(targetEntity="ProductMedia", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="ProductMedia")
+     * @ORM\JoinTable(name="product_media",
+     *      joinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
+     *      )
      */
     private $media;
 
     public function __construct() {
         $this->basket = new ArrayCollection();
+//        dump($this->media);die;
+
+        $this->media = new ArrayCollection();
     }
 
     /**
