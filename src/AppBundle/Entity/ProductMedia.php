@@ -20,6 +20,12 @@ class ProductMedia extends Media
      */
     private $imageFile;
 
+    /**
+     * ORM\ManyToOne(targetEntity="Product", inversedBy="media")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     */
+    private $product;
+
     public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
@@ -30,5 +36,22 @@ class ProductMedia extends Media
         return $this->imageFile;
     }
 
+    /**
+     * @param mixed $product
+     * @return ProductMedia
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
 }
 

@@ -131,7 +131,8 @@ easy_admin:
                     - price
                     - category
                     - basket
-                    - {property: 'media', type: 'AppBundle\Form\ProductType'}
+#                    - {property: 'media', type: 'AppBundle\Form\ProductMediaType'}
+                    - { property: 'media', type: 'collection', type_options: { entry_type: 'AppBundle\Form\ProductMediaType', by_reference: true } }
 #            show:
 #                fields:
 #                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
@@ -207,15 +208,9 @@ vich_uploader:
         product_images:
             uri_prefix:         '%app.path.product_images%'
             upload_destination: '%kernel.root_dir%/../web/uploads/images/products'
-            delete_on_update:   true
-            delete_on_remove:   true
         category_images:
             uri_prefix:         '%app.path.category_images%'
             upload_destination: '%kernel.root_dir%/../web/uploads/images/category'
-            delete_on_update:   true
-            delete_on_remove:   true
         user_images:
             uri_prefix:         '%app.path.user_images%'
             upload_destination: '%kernel.root_dir%/../web/uploads/images/users'
-            delete_on_update:   true
-            delete_on_remove:   true

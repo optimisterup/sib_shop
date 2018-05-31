@@ -25,5 +25,4 @@ class ProductMediaType extends AbstractType
             'virtual' => true,
         ));
     }
-
 }

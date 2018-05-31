@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,8 +20,6 @@ class Product
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    private $image;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -48,31 +47,38 @@ class Product
      **/
     private $basket;
 
-//    /**
-//     * @ORM\OneToOne(targetEntity="ProductMedia", cascade={"persist", "remove"})
-//     * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
-//     */
-
-//    /**
-//     * Many Users have Many Groups.
-//     * @var ArrayCollection
-//     * @ORM\ManyToMany(targetEntity="ProductMedia")
-//     */
-
     /**
-     * @ORM\ManyToMany(targetEntity="ProductMedia")
-     * @ORM\JoinTable(name="product_media",
-     *      joinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
-     *      )
+     * @ORM\OneToMany(targetEntity="ProductMedia", mappedBy="product", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $media;
 
     public function __construct() {
         $this->basket = new ArrayCollection();
-//        dump($this->media);die;
+        $this->media  = new ArrayCollection();
+    }
 
-        $this->media = new ArrayCollection();
+    /**
+     * @param ProductMedia $product
+     * @return $this
+     */
+    public function addMedia(ProductMedia $product)
+    {
+        $product->setProduct($this);
+        $this->media[] = $product;
+        return $this;
+    }
+
+    public function removeMedia(ProductMedia $media)
+    {
+        $this->media->removeElement($media);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
     }
 
     /**
@@ -167,37 +173,26 @@ class Product
     }
 
     /**
-     * @return mixed
+     * Add basket
+     *
+     * @param \AppBundle\Entity\Cart $basket
+     *
+     * @return Product
      */
-    public function getMedia()
+    public function addBasket(\AppBundle\Entity\Cart $basket)
     {
-        return $this->media;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setMedia($media)
-    {
-        $this->media = $media;
+        $this->basket[] = $basket;
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * Remove basket
+     *
+     * @param \AppBundle\Entity\Cart $basket
      */
-    public function getImage()
+    public function removeBasket(\AppBundle\Entity\Cart $basket)
     {
-        return $this->image;
+        $this->basket->removeElement($basket);
     }
-
-    /**
-     * @param mixed $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
-
 }
