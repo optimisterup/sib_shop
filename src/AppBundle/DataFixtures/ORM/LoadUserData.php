@@ -8,23 +8,20 @@ use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadArticleData implements FixtureInterface, ORMFixtureInterface
+class LoadUserData implements FixtureInterface, ORMFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $article = new User();
-        $article
+        $user = new User();
+        $user
             ->setUsername('admin')
+            ->setUsernameCanonical('admin')
             ->setEmail('email@email.email')
+            ->setEmailCanonical('email@email.email')
             ->setEnabled(true)
             ->setPlainPassword('admin')
-            ->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
-
-        $manager->persist($article);
-
-        $delivery= new Delivary();
-        $delivery
-                ->setStatus('Ready');
+            ->setRoles(['ROLE_ADMIN']);
+        $manager->persist($user);
         $manager->flush();
     }
 }

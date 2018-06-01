@@ -21,7 +21,7 @@ class ProductMediaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '\AppBundle\Entity\ProductMedia',
+            'data_class' => ProductMedia::class,
             'virtual' => true,
         ));
     }

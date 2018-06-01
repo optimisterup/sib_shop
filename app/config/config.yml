@@ -114,6 +114,23 @@ easy_admin:
                     - parent
                     - product
                     - {property: 'media', type: 'AppBundle\Form\CategoryMediaType'}
+        Media:
+            class: AppBundle\Entity\Media
+            list:
+                fields:
+                    - id
+#                      - product
+                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
+#                      - imageFile
+#                      - updatedAt
+            form:
+                fields:
+#                      - product
+#                      - imageFile
+                    - { property: 'imageFile', type: 'AppBundle\Form\UserMedia'}
+            show:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
         Product:
             class: AppBundle\Entity\Product
             list:
@@ -124,6 +141,8 @@ easy_admin:
                     - price
                     - category
                     - basket
+                    - product
+                    - media
             form:
                 fields:
                     - name
@@ -133,9 +152,9 @@ easy_admin:
                     - basket
 #                    - {property: 'media', type: 'AppBundle\Form\ProductMediaType'}
                     - { property: 'media', type: 'collection', type_options: { entry_type: 'AppBundle\Form\ProductMediaType', by_reference: true } }
-#            show:
-#                fields:
-#                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+            show:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
         Basket:
             class: AppBundle\Entity\Cart
             list:
@@ -175,25 +194,8 @@ easy_admin:
 #              show:
 #                  fields:
 #                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
-        Media:
-              class: AppBundle\Entity\UserMedia
-              list:
-                  fields:
-                      - id
-#                      - product
-                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
-#                      - imageFile
-#                      - updatedAt
-              form:
-                  fields:
-#                      - product
-#                      - imageFile
-                      - { property: 'imageFile', type: 'vich_image', label: 'Upload logo', help: 'Select file to upload / change logo' }
-              show:
-                  fields:
-                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
 
-#                      - updatedAt
+
 #        Order:
 #            class: AppBundle\Entity\Order
 #            list:
@@ -208,6 +210,9 @@ vich_uploader:
         product_images:
             uri_prefix:         '%app.path.product_images%'
             upload_destination: '%kernel.root_dir%/../web/uploads/images/products'
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
         category_images:
             uri_prefix:         '%app.path.category_images%'
             upload_destination: '%kernel.root_dir%/../web/uploads/images/category'

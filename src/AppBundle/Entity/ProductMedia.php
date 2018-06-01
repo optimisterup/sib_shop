@@ -20,17 +20,22 @@ class ProductMedia extends Media
      */
     private $imageFile;
 
-    /**
-     * ORM\ManyToOne(targetEntity="Product", inversedBy="media")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-     */
-    private $product;
+//    /**
+//     * ORM\ManyToOne(targetEntity="Product", inversedBy="media")
+//     */
+//    private $product;
 
+    /**
+     * @param File|null $image
+     */
     public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
     }
 
+    /**
+     * @return File
+     */
     public function getImageFile()
     {
         return $this->imageFile;

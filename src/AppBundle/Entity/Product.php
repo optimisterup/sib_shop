@@ -47,8 +47,15 @@ class Product
      **/
     private $basket;
 
+//    /**
+//     * @ORM\OneToMany(targetEntity="ProductMedia", mappedBy="product", cascade={"persist","remove"}, orphanRemoval=true)
+//     */
     /**
-     * @ORM\OneToMany(targetEntity="ProductMedia", mappedBy="product", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="ProductMedia", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\JoinTable(name="media_user",
+     *      joinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $media;
 
@@ -74,7 +81,7 @@ class Product
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getMedia(): Collection
     {

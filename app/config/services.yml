@@ -30,7 +30,7 @@ services:
         tags: ['controller.service_arguments']
     app.form.user_media:
             class: AppBundle\Form\UserMediaType
-            arguments: ['@doctrine.orm.entity_manager']
+#            arguments: ['@doctrine.orm.entity_manager']
             tags:
                 - { name: form.type, alias: app_user_media }
 
