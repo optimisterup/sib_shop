@@ -33,7 +33,9 @@ services:
 #            arguments: ['@doctrine.orm.entity_manager']
             tags:
                 - { name: form.type, alias: app_user_media }
-
+    app:shop-parser:
+            class: AppBundle\Command\CreateUserCommand
+            arguments: ['@doctrine.orm.entity_manager']
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
