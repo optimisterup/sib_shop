@@ -2,18 +2,13 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\Media;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\ProductMedia;
-use Doctrine\ORM\EntityManager;
 use DOMXPath;
-use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DomCrawler\Crawler;
 
 class CreateUserCommand extends ContainerAwareCommand
 {
@@ -29,20 +24,12 @@ class CreateUserCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+// for site http://mi-shop.kg/
         $url = $input->getArgument('url');
-//    http://mi-shop.kg/
-//    $client = new Client();
-//    try{
-//        $res = $client->request('GET', $url);
-//        $domDocument = new \DOMDocument('1.0', 'UTF-8');
-//        @$domDocument->loadHTML($res->getBody()->getContents());
-//        dump($domDocument);die;
-//    }catch (\Exception $ex){
-//        $output->writeln($ex->getMessage());
-//    }
-//            $res = $client->request('GET', $url);
+
         $dom_doc = new \DOMDocument();
         libxml_use_internal_errors(TRUE);
+        $dom_doc->preserveWhiteSpace = false;
         $html = file_get_contents($url);
 
         if (!empty($html)) {
@@ -51,56 +38,54 @@ class CreateUserCommand extends ContainerAwareCommand
             $dom_xpath = new DOMXPath($dom_doc);
 
             $dom_row = $dom_xpath->query('//span[@class="main_carousel_item_title"]');
-            if ($dom_row->length > 0) {
-                foreach ($dom_row as $row) {
-                    $product_name[] = $row->nodeValue;
+                if ($dom_row->length > 0) {
+                    foreach ($dom_row as $row) {
+                        $product_name[] = $row->nodeValue;
+                    }
                 }
-            }
 
             $dom_row2 = $dom_xpath->query('//span[@class="woocommerce-Price-amount amount"]');
-            if ($dom_row2->length > 0) {
-                foreach ($dom_row2 as $row) {
-                    $product_price[] = $row->nodeValue;
+                if ($dom_row2->length > 0) {
+                    foreach ($dom_row2 as $row) {
+                        $string = htmlentities($row->firstChild->nodeValue, null, 'utf-8');
+                        $content = str_replace( ' ' , '',str_replace("&nbsp;", "", $string));
+                        $content = html_entity_decode($content);
+                        $product_price[]=htmlentities($content);
+                    }
                 }
-            }
-
             $dom_row3 = $dom_xpath->query('//img[@class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image"]');
+
+            $em = $this->getContainer()->get('doctrine')->getManager();
+
             foreach ($dom_row3 as $row) {
                 /**
                  * @var $row \DOMElement
                  */
-                $link= $row->attributes->getNamedItem('src')->nodeValue;
-                $realy_link = str_replace('//', 'http://', $link);
-
-//                $pattern='#/\/[a-z0-9]$#';
-
+                $link = $row->attributes->getNamedItem('src')->nodeValue;
+                $really_link = str_replace('//', 'http://', $link);
                 $destdir = 'web/uploads/images/products';
-                $img=file_get_contents($realy_link);
-//                $product_media_entity=new ProductMedia();
-//                $product_media_entity->setImageFile($img);
-//                dump($product_media_entity);
-                file_put_contents($destdir.substr($realy_link, strrpos($realy_link,'/')), $img);
-//                $array_product_media[]=$product_media_entity;
-//                dump($row->attributes->getNamedItem('src')->nodeValue);
+                $img = file_get_contents($really_link);
+                file_put_contents($destdir . substr($really_link, strrpos($really_link, '/')), $img);
+                $product_media_entity = new ProductMedia();
+                $array_split=explode('/', $link);
+                $array_sort = array_reverse($array_split);
+                $product_media_entity->setImage($array_sort[0]);
+                $em->persist($product_media_entity);
+                $array_product_media[] = $product_media_entity;
             }
+            $em->flush();
         }
 
-        for($i=0; $i<count($product_name);$i++){
-            $product = new Product();
-            $product->setName($product_name[$i]);
-            $product->setPrice($product_price[$i]);
-//            $product->addMedia($array_product_media[$i]);
-            $em=$this->getContainer()->get('doctrine');
-            $em->persist($product);
-            $em->flush();
-            echo "добавил продукт";
+        for ($i = 0; $i < count($product_name); $i++) {
+                $product = new Product();
+                $product->setName($product_name[$i]);
+                $product->setPrice($product_price[$i]);
+                $product->addMedia($array_product_media[$i]);
+                $em->persist($product);
         }
-//        dump($product_media);
-//
+
+        if ($em->flush()){
+            dump("added products");
+        }
     }
-//    качать
-//    upload
-//productmedia entity
-//
-//л
 }

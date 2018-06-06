@@ -1,16 +1,321 @@
 {% extends 'base.html.twig' %}
-
+        {% block stylesheets %}
+            <link rel="stylesheet" href="/web/css/bootstrap.min.css">
+            <link rel="stylesheet" href="/web/css/font-awesome.css">
+            <link rel="stylesheet" href="/web/css/style.css">
+        {% endblock %}
 {% block body %}
-    <h2>Welcome to our shop</h2>
-    <h3>To Continue you can <a href="{{ path('fos_user_security_login') }}">Login</a> OR
-        <a href="{{ path('fos_user_registration_register') }}">Register</a>
-    </h3>
+    <header>
+        <h2>Welcome to our shop to Continue you can <a href="{{ path('fos_user_security_login') }}">Login</a> OR
+            <a href="{{ path('fos_user_registration_register') }}">Register</a>
+        </h2>
+        <div class="container ">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">
+                    {#<img src="{{ asset(' /web/img/logo.png')}}" width="90" height="30" alt="logo">#}
+                     {#>#}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="#">Employers </a>
+                        <a class="nav-item nav-link" href="#">Portfolio</a>
+                        <a class="nav-item nav-link" href="#">About us</a>
+                        <a class="nav-item nav-link" href="#">Team</a>
+                    </div>
+                    <button type="button" class="btn btn-success ml-auto rhbtn" data-toggle="modal"
+                            data-target="#modal-form-registration">Login
+                    </button>
+                    <div class="modal fade" id="modal-form-registration" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Name user</label>
+                                            <input type="text" class="form-control" id="userName"
+                                                   placeholder="User name">
+                                            <small id="emailHelp" class="form-text text-muted">We'll never share your
+                                                email with anyone else.
+                                            </small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email address</label>
+                                            <input type="email" class="form-control" id="exampleInputEmail1"
+                                                   placeholder="Enter email">
+                                            <small id="emailHelp2" class="form-text text-muted">We'll never share your
+                                                email with anyone else.
+                                            </small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Password</label>
+                                            <input type="password" class="form-control" id="exampleInputPassword1"
+                                                   placeholder="Password">
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input">
+                                                Check me out
+                                            </label>
+                                        </div>
+                                        <button type="submit" class="w-100 btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="sliders">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+                <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="/web/img/slider-pic.jpg" alt="First slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3><span>Where will</span> great work </h3>
+                        <h3><span>take you?</span></h3>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="/web/img/slider-pic.jpg" alt="Second slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3><span>Where will</span> great work </h3>
+                        <h3><span>take you?</span></h3>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="/web/img/slider-pic.jpg" alt="Third slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3><span>Where will</span> great work </h3>
+                        <h3><span>take you?</span></h3>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev"></a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"></a>
+        </div>
+    </div>
+    <div class="bgcard">
+        <div class="container ">
+            <div class="jumbotron ">
+                <h2 class="display-3">We give <span>best Services</span></h2>
+                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo ut provident esse,
+                    deserunt quae saepe cum nam reiciendis voluptatibus ad, possimus repellat alias officia blanditiis.
+                    Lorem ipsum dolor libero, explicabo.</p>
+            </div>
+
+        </div>
+    </div>
+    <div class="bgcard">
+        <div class="bgmidle">
+            <div class="container text">
+                <div class="row ">
+                    <div class="col-sm-12 col-md-6 col-lg-3 list">
+                        <div class="card bgcard">
+                            <img src="/web/img/ic-1.png" alt="#">
+                            <h4>New Way of Vision</h4>
+                            <div class="card-body">
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-3 list">
+                        <div class="card bgcard">
+                            <img src="/web/img/ic-2.png" alt="#">
+                            <h4>Fresh Ideas</h4>
+                            <div class="card-body">
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-3 list">
+                        <div class="card bgcard">
+                            <img src="/web/img/ic-3.png" alt="#">
+                            <h4>Strong Foundations</h4>
+                            <div class="card-body">
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-3 list">
+                        <div class="card bgcard">
+                            <img src="/web/img/ic-4.png" alt="#">
+                            <h4>Great Support</h4>
+                            <div class="card-body">
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bgwhite">
+        <div class="container ">
+            <div class="row ">
+                <div class="col-sm-12 col-md-6 card1">
+                    <img src="/web/img/pic-big-1.png" alt="#">
+                </div>
+                <div class="col-sm-12 col-md-6 card2">
+                    <h4>Find <span>the perfect</span> match </h4>
+                    <h4>fast </h4>
+                    <div class="card-body2">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bgcard">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="card2 bgcard">
+                        <h4>Great <span>work starts</span> with</h4>
+                        <h4>great talent</h4>
+                        <div class="card-body2">
+                            <ul>
+                                <li><img src="/web/img/arrow.png" alt="#">Lorem ipsum dolor sit amet, consectetur.</li>
+                                <li><img src="/web/img/arrow.png" alt="#">Lorem ipsum dolor sit amet, consectetur.</li>
+                                <li><img src="/web/img/arrow.png" alt="#">Lorem ipsum dolor sit amet, consectetur.</li>
+                                <li><img src="/web/img/arrow.png" alt="#">Lorem ipsum dolor sit amet, consectetur.</li>
+                                <li><img src="/web/img/arrow.png" alt="#">Lorem ipsum dolor sit amet, consectetur.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <img src="/web/img/pic-big-2.png" alt="#">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bgmidle">
+        <div class="container text2">
+            <h4>Recent Work Done on <span>JOB BOARD</span></h4>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-1.jpg" alt="#">
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btnblue">Graphics</a>
+                            <p class="card-textlower">Round Icons Design</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-2.jpg" alt="#">
+
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btngreen">Graphics</a>
+                            <p class="card-textlower">Stationary Design</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-3.jpg" alt="#">
+
+
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btnpurple">Graphics</a>
+                            <p class="card-textlower">Logo Design</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-4.jpg" alt="#">
+
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btnyellow">Graphics</a>
+                            <p class="card-textlower">Branding</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bgmidle">
+        <div class="container text">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-5.jpg" alt="#">
+
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btngreen">Graphics</a>
+                            <p class="card-textlower">Visiting Card Design</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-6.jpg" alt="#">
+
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btnyellow">Graphics</a>
+                            <p class="card-textlower">Brochure Design</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-7.jpg" alt="#">
+
+
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btnblue">Graphics</a>
+                            <p class="card-textlower">Branding</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 list">
+                    <div class="carders">
+                        <img src="/web/img/pic-8.jpg" alt="#">
+
+                        <div class="card-bodylower">
+                            <a href="#" class="btn btnpurple">Graphics</a>
+                            <p class="card-textlower">Stationary Design</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer>
+    <div class="container">
+        <p><i class="fa fa-copyright" aria-hidden="true"></i> 2018 Landing Page By Sib</p>
+    </div>
+</footer>
 {% endblock %}
 
-{% block stylesheets %}
-<style>
-    h2,h3 {
-        text-align: center;
-    }
-</style>
-{% endblock %}
