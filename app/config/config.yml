@@ -233,3 +233,8 @@ liip_imagine:
                     size: 0.5
                     # set the position of the watermark
                     position: center
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
