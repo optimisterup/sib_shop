@@ -257,6 +257,11 @@
         </div>
     </div>
 
+    {% for category in categories %}
+        <li><a href="{{ path('app_shop_selectcategory', {'id': category.id}) }}">{{ category.name }}</a></li>
+    {% endfor %}
+
+
     <table style="text-align: center">
         <tr>
             {% set foo = 0 %}

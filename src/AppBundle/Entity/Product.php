@@ -43,6 +43,12 @@ class Product
     private $category;
 
     /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="CartProduct", mappedBy="product")
+     */
+    private $cartProduct;
+
+    /**
      * @ORM\ManyToMany(targetEntity="ProductMedia", cascade={"persist","remove"}, orphanRemoval=true)
      * @ORM\JoinTable(name="media_user",
      *      joinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")},
@@ -53,6 +59,8 @@ class Product
 
     public function __construct() {
         $this->media  = new ArrayCollection();
+        $this->cartProduct = new ArrayCollection();
+
     }
 
     /**

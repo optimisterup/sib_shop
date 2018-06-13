@@ -140,7 +140,6 @@ easy_admin:
                     - description
                     - price
                     - category
-                    - basket
                     - product
                     - media
             form:
@@ -149,7 +148,6 @@ easy_admin:
                     - description
                     - price
                     - category
-                    - basket
 #                    - {property: 'media', type: 'AppBundle\Form\ProductMediaType'}
                     - { property: 'media', type: 'collection', type_options: { entry_type: 'AppBundle\Form\ProductMediaType', by_reference: true } }
             show:

@@ -19,9 +19,9 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Cart", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="CartProduct", mappedBy="user")
      */
-    private $cart;
+    private $cartProduct;
 
     /**
     * @ORM\OneToOne(targetEntity="UserMedia", cascade={"persist", "remove"})
@@ -32,23 +32,22 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->cart= new ArrayCollection();
     }
 
     /**
      * @return mixed
      */
-    public function getCart()
+    public function getCartProduct()
     {
-        return $this->cart;
+        return $this->cartProduct;
     }
 
     /**
      * @param mixed $cart
      */
-    public function setCart($cart)
+    public function setCartProduct(CartProduct $cart)
     {
-        $this->cart = $cart;
+        $this->cartProduct = $cart;
     }
 
     /**

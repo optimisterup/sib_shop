@@ -18,69 +18,67 @@ class Cart
      */
     protected $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="cart")
-     * @ORM\JoinColumn(name="user", referencedColumnName="id")
-     **/
-    private $user;
-
 //    /**
-//     * @ORM\ManyToOne(targetEntity="CartProduct", inversedBy="product_id")
-//     * @ORM\JoinColumn(name="product", referencedColumnName="id")
+//     * @ORM\OneToOne(targetEntity="User", inversedBy="cart")
+//     * @ORM\JoinColumn(name="user", referencedColumnName="id")
 //     **/
-//    private $product;
+//    private $user;
+
+
 
 //    /**
-//     * @ORM\Column(type="datetime")
-//     * @var \DateTime
+//     * @ORM\ManyToMany(targetEntity="Product")
+//     * @ORM\JoinTable(name="cart_product",
+//     *      joinColumns={@ORM\JoinColumn(name="name", referencedColumnName="id")},
+//     *      inverseJoinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id", unique=false)}
+//     *      )
 //     */
-//    private $updatedAt;
+//    private $product;
+//
+//    public function __construct() {
+//        $this->product = new ArrayCollection();
+//    }
+//
+//    /**
+//     * @param Product $product
+//     * @return $this
+//     */
+//    public function addProduct(Product $product)
+//    {
+//        if ($product) {
+//            // if 'updatedAt' is not defined in your entity, use another property
+//            $this->updatedAt = new \DateTime('now');
+//        }
+//        $this->product[] = $product;
+//        return $this;
+//    }
+//
+//    /**
+//     * Remove product
+//     * @param Product $product
+//     */
+//    public function removeProduct(Product $product)
+//    {
+//        $this->product->removeElement($product);
+//    }
 
     /**
-     * @ORM\ManyToMany(targetEntity="Product")
-     * @ORM\JoinTable(name="cart_product",
-     *      joinColumns={@ORM\JoinColumn(name="name", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id", unique=false)}
-     *      )
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="CartProduct", mappedBy="cart")
      */
-    private $product;
+    private $cartProduct;
 
     public function __construct() {
-        $this->product = new ArrayCollection();
+        $this->cartProduct = new ArrayCollection();
     }
 
-    /**
-     * @param Product $product
-     * @return $this
-     */
-    public function addProduct(Product $product)
-    {
-        if ($product) {
-            // if 'updatedAt' is not defined in your entity, use another property
-            $this->updatedAt = new \DateTime('now');
-        }
-        $this->product[] = $product;
-        return $this;
-    }
-
-    /**
-     * Remove product
-     * @param Product $product
-     */
-    public function removeProduct(Product $product)
-    {
-        $this->product->removeElement($product);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProducts()
-    {
-        return $this->product;
-    }
-
-
+//    /**
+//     * @return mixed
+//     */
+//    public function getProducts()
+//    {
+//        return $this->product;
+//    }
 
     /**
      * @return mixed
@@ -109,6 +107,24 @@ class Cart
     public function __toString()
     {
         return (string) $this->user;
+    }
+
+    /**
+     * @param mixed $cartProduct
+     * @return Cart
+     */
+    public function setCartProduct($cartProduct)
+    {
+        $this->cartProduct = $cartProduct;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCartProduct()
+    {
+        return $this->cartProduct;
     }
 
 }
