@@ -196,12 +196,10 @@
 
                 <div class="top_line_cart">
 
-                        <a class="cart-contents"
-                           href="{{ path('my_cart', {'id': currentCartId}) }}"
-                        >
+                        <a class="cart-contents" href="{{ path('my_cart', {'id': currentCartId}) }}">
 
                         <span id="header_cart_text">Корзина</span>
-                        {#<span id="header_cart_total">{{ countProductsInCart }}</span>#}
+                        <span id="header_cart_total">{{ countProductsInCart }}</span>
                     </a>
                 </div>
             </div>
@@ -215,7 +213,7 @@
                     <span class="header_logo_text">
 						SIB-SHOP.KG
 						<span>фирменный магазин</span>
-                    </span>
+					</span>
             </div>
 
             <div class="header_menu">
@@ -261,11 +259,6 @@
         </div>
     </div>
 
-    {% for category in categories %}
-        <li><a href="{{ path('app_shop_selectcategory', {'id': category.id}) }}">{{ category.name }}</a></li>
-    {% endfor %}
-
-
     <table style="text-align: center">
         <tr>
             {% set foo = 0 %}
@@ -282,7 +275,7 @@
                             <div>
                                 <h4>{{ product.name }}</h4>
                                 <span>{{ product.price }}</span>
-                                <span><a href="{{ path('add_product', {'id': product.id}) }}">CART</a></span>
+                                {#<span><a href="{{ path('add_product', {'id': product.id}) }}">CART</a></span>#}
                                 <hr>
                             </div>
                         </td>

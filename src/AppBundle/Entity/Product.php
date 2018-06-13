@@ -43,10 +43,10 @@ class Product
     private $category;
 
     /**
-     * One Product has Many Features.
-     * @ORM\OneToMany(targetEntity="CartProduct", mappedBy="product")
+     * @ORM\ManyToOne(targetEntity="CartProduct", inversedBy="products")
+     * @ORM\JoinColumn(name="product", referencedColumnName="id")
      */
-    private $cartProduct;
+    private $product;
 
     /**
      * @ORM\ManyToMany(targetEntity="ProductMedia", cascade={"persist","remove"}, orphanRemoval=true)
@@ -59,8 +59,6 @@ class Product
 
     public function __construct() {
         $this->media  = new ArrayCollection();
-        $this->cartProduct = new ArrayCollection();
-
     }
 
     /**
@@ -168,6 +166,24 @@ class Product
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+
+    /**
+     * @param mixed $product
+     * @return Product
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 
 }

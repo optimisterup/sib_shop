@@ -25,13 +25,13 @@ class CartProduct
      * @ORM\ManyToOne(targetEntity="Cart", inversedBy="cartProduct")
      * @ORM\JoinColumn(name="cart", referencedColumnName="id")
      */
-    private $cart;
+    private $carts;
 
-//    /**
-//     * @ORM\ManyToOne(targetEntity="Product", inversedBy="cartProduct")
-//     * @ORM\JoinColumn(name="product", referencedColumnName="id")
-//     */
-//    private $product;
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="cartProduct")
+     * @ORM\JoinColumn(name="product", referencedColumnName="id")
+     */
+    private $products;
 
     /**
      * @ORM\OneToOne(targetEntity="User", inversedBy="cartProduct")
@@ -52,58 +52,9 @@ class CartProduct
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCart()
-    {
-        return $this->cart;
-    }
-
-    /**
-     * @param mixed $cart
-     * @return CartProduct
-     */
-    public function setCart($cart)
-    {
-        $this->cart = $cart;
-        return $this;
-    }
-
-//    /**
-//     * @param mixed $product
-//     * @return CartProduct
-//     */
-//    public function setProduct($product)
-//    {
-//        if ($product){
-//            $this->count++;
-//        }
-//        $this->product = $product;
-//        return $this;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getProduct()
-//    {
-//        return $this->product;
-//    }
-
-
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Product")
-     * @ORM\JoinTable(name="cart_product",
-     *      joinColumns={@ORM\JoinColumn(name="name", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id", unique=false)}
-     *      )
-     */
-    private $product;
-
     public function __construct() {
-        $this->product = new ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->carts    = new ArrayCollection();
     }
 
     /**
@@ -117,7 +68,7 @@ class CartProduct
             $this->updatedAt = new \DateTime('now');
 
         }
-            $this->product[] = $product;
+            $this->products[] = $product;
         return $this;
     }
 
@@ -130,11 +81,36 @@ class CartProduct
         if ($product){
             $this->count--;
         }
-        $this->product->removeElement($product);
+        $this->products->removeElement($product);
     }
 
 
+    /**
+     * @param Cart $cart
+     * @return $this
+     */
+    public function addCart(Cart $cart)
+    {
+        if ($cart) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
 
+        }
+        $this->carts[] = $cart;
+        return $this;
+    }
+
+    /**
+     * Remove product
+     * @param Cart $cart
+     */
+    public function removeCart(Cart $cart)
+    {
+        if ($cart){
+            $this->count--;
+        }
+        $this->products->removeElement($cart);
+    }
 
 
 
@@ -157,7 +133,6 @@ class CartProduct
     }
 
     /**
-     * @param mixed $count
      * @return CartProduct
      */
     public function addCount()
@@ -174,12 +149,21 @@ class CartProduct
         return $this->count;
     }
 
-//    public function __construct()
-//    {
-//        $this->cart = new ArrayCollection();
-//        $this->product = new ArrayCollection();
-//    }
+    /**
+     * @return mixed
+     */
+    public function getCarts()
+    {
+        return $this->carts;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
 
 
 }
