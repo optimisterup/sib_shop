@@ -25,6 +25,13 @@ class Cart
     private $cart;
 
     /**
+     * @ORM\OneToOne(targetEntity="User", inversedBy="cart")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
+
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -48,6 +55,24 @@ class Cart
     public function getCart()
     {
         return $this->cart;
+    }
+
+    /**
+     * @param mixed $user
+     * @return Cart
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
 

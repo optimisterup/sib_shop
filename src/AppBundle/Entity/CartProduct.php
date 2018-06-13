@@ -22,22 +22,16 @@ class CartProduct
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Cart", inversedBy="cart")
+     * @ORM\OneToMany(targetEntity="Cart", mappedBy="cart")
      * @ORM\JoinColumn(name="carts", referencedColumnName="id")
      */
     private $carts;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="cartProduct")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id")
      */
     private $products;
-
-    /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="cartProduct")
-     * @ORM\JoinColumn(name="user", referencedColumnName="id")
-     */
-    private $user;
 
     /**
     * @ORM\Column(type="integer")
@@ -53,34 +47,7 @@ class CartProduct
     }
 
     public function __construct() {
-        $this->products = new ArrayCollection();
         $this->carts    = new ArrayCollection();
-    }
-
-    /**
-     * @param $product
-     * @return $this
-     */
-    public function addProduct($product)
-    {
-        if ($product) {
-            // if 'updatedAt' is not defined in your entity, use another property
-            $this->updatedAt = new \DateTime('now');
-        }
-            $this->products = $product;
-        return $this;
-    }
-
-    /**
-     * Remove product
-     * @param Product $product
-     */
-    public function removeProduct(Product $product)
-    {
-        if ($product){
-            $this->count--;
-        }
-        $this->products->removeElement($product);
     }
 
     /**
@@ -89,7 +56,7 @@ class CartProduct
      */
     public function addCart($cart)
     {
-        $this->carts = $cart;
+        $this->carts[] = $cart;
         return $this;
     }
 
@@ -99,25 +66,7 @@ class CartProduct
      */
     public function removeCart(Cart $cart)
     {
-        $this->products->removeElement($cart);
-    }
-
-    /**
-     * @param mixed $user
-     * @return CartProduct
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
+        $this->carts->removeElement($cart);
     }
 
     /**
@@ -172,6 +121,4 @@ class CartProduct
         $this->carts = $carts;
         return $this;
     }
-
-
 }

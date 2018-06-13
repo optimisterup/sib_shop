@@ -43,10 +43,9 @@ class Product
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CartProduct", inversedBy="products")
-     * @ORM\JoinColumn(name="product", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="CartProduct", mappedBy="products")
      */
-    private $product;
+    private $products;
 
     /**
      * @ORM\ManyToMany(targetEntity="ProductMedia", cascade={"persist","remove"}, orphanRemoval=true)
@@ -59,6 +58,7 @@ class Product
 
     public function __construct() {
         $this->media  = new ArrayCollection();
+        $this->products  = new ArrayCollection();
     }
 
     /**
@@ -83,6 +83,33 @@ class Product
     public function getMedia(): Collection
     {
         return $this->media;
+    }
+
+    /**
+     * @param CartProduct $cartproduct
+     * @return $this
+     */
+    public function addProduct(CartProduct $cartproduct)
+    {
+        $cartproduct->setProducts($this);
+        $this->products[] = $cartproduct;
+        return $this;
+    }
+
+    /**
+     * @param CartProduct $cartproduct
+     */
+    public function removeProduct(CartProduct $cartproduct)
+    {
+        $this->products->removeElement($cartproduct);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProduct(): Collection
+    {
+        return $this->products;
     }
 
     /**
@@ -168,22 +195,6 @@ class Product
         $this->category = $category;
     }
 
-    /**
-     * @param mixed $product
-     * @return Product
-     */
-    public function setProduct($product)
-    {
-        $this->product = $product;
-        return $this;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getProduct()
-    {
-        return $this->product;
-    }
 
 }

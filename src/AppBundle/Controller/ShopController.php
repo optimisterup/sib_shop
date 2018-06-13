@@ -21,12 +21,18 @@ class ShopController extends Controller
         $products = $this->getDoctrine()->getRepository('AppBundle:Product');
 
         $currentUser = $this->getUser();
-        $currentCart = $currentUser->getCartProduct();
-        $currentCartId=$currentCart->getId();
-//        $countProductsInCart = $currentCart->getCount();
+        if (is_null($currentUser->getCart())){
+            $currentCartId = "#";
+            $countProductsInCart=0;
+
+        }else{
+            $currentCart=$currentUser->getCart();
+            $currentCartId=$currentCart->getId();
+            $countProductsInCart = $currentCart->getCount();
+        }
 
         return $this->render('default/index.html.twig', [
-//            'countProductsInCart' => $countProductsInCart,
+            'countProductsInCart' => $countProductsInCart,
             'products' => $products,
             'categories' => $allCategories,
             'currentCartId' =>$currentCartId,
@@ -49,11 +55,17 @@ class ShopController extends Controller
         $products=$selectedCategory->getProduct();
 
         $currentUser = $this->getUser();
-        $currentCart = $currentUser->getCartProduct();
-        $currentCartId=$currentCart->getId();
-//        $countProductsInCart = $currentCart->getCount();
+        if (is_null($currentUser->getCart())){
+            $currentCartId = "#";
+            $countProductsInCart=0;
+
+        }else{
+            $currentCart=$currentUser->getCart();
+            $currentCartId=$currentCart->getId();
+            $countProductsInCart = $currentCart->getCount();
+        }
         return $this->render('default/index.html.twig', array(
-//            'countProductsInCart' => $countProductsInCart,
+            'countProductsInCart' => $countProductsInCart,
             'products' => $products,
             'categories' => $allCategories,
             'currentCartId' =>$currentCartId,
@@ -112,18 +124,18 @@ class ShopController extends Controller
         $em = $this->getDoctrine()->getManager();
         $currentUser=$this->getUser();
         $addedProduct=$em->getRepository('AppBundle:Product')->find($id);
-        if ($currentUser->getCartProduct()!=null) {
-            $cartProduct=$currentUser->getCartProduct();
-            $cartProduct->addProduct($addedProduct);
-//            $productInCart=$em->getRepository('AppBundle:CartProduct')->findOneBy(['product'=>$id, 'user'=>$currentUser]);
+        if ($currentUser->getCart()!=null) {
+            $cart=$currentUser->getCart();
+            $cartProduct=$em->getRepository('AppBundle:Cart')->find($cart);
+            $cartProduct->setProducts($addedProduct);
+            $productInCart=$em->getRepository('AppBundle:CartProduct')->findOneBy(['product'=>$id, 'user'=>$currentUser]);
+            $productInCart->addCount();
         }else{
             $cartProduct = new CartProduct();
-            $cartProduct->setUser($currentUser);
             $cartProduct->setProducts($addedProduct);
         }
-//        $productInCart->addCount();
-        $cartProduct->setProducts($addedProduct);
-        $cartProduct->addCart($cartProduct);
+//        $cartProduct->setProducts($addedProduct);
+        $cartProduct->addCart($cart);
 //dump($cartProduct);die;
         $em->persist($cartProduct);
 //        $em->persist($productInCart);
