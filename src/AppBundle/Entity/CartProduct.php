@@ -22,8 +22,8 @@ class CartProduct
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Cart", inversedBy="cartProduct")
-     * @ORM\JoinColumn(name="cart", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Cart", inversedBy="cart")
+     * @ORM\JoinColumn(name="carts", referencedColumnName="id")
      */
     private $carts;
 
@@ -36,7 +36,7 @@ class CartProduct
     /**
      * @ORM\OneToOne(targetEntity="User", inversedBy="cartProduct")
      * @ORM\JoinColumn(name="user", referencedColumnName="id")
-     **/
+     */
     private $user;
 
     /**
@@ -58,17 +58,16 @@ class CartProduct
     }
 
     /**
-     * @param Product $product
+     * @param $product
      * @return $this
      */
-    public function addProduct(Product $product)
+    public function addProduct($product)
     {
         if ($product) {
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
-
         }
-            $this->products[] = $product;
+            $this->products = $product;
         return $this;
     }
 
@@ -84,19 +83,13 @@ class CartProduct
         $this->products->removeElement($product);
     }
 
-
     /**
-     * @param Cart $cart
+     * @param $cart
      * @return $this
      */
-    public function addCart(Cart $cart)
+    public function addCart($cart)
     {
-        if ($cart) {
-            // if 'updatedAt' is not defined in your entity, use another property
-            $this->updatedAt = new \DateTime('now');
-
-        }
-        $this->carts[] = $cart;
+        $this->carts = $cart;
         return $this;
     }
 
@@ -106,13 +99,8 @@ class CartProduct
      */
     public function removeCart(Cart $cart)
     {
-        if ($cart){
-            $this->count--;
-        }
         $this->products->removeElement($cart);
     }
-
-
 
     /**
      * @param mixed $user
@@ -163,6 +151,26 @@ class CartProduct
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @param mixed $products
+     * @return CartProduct
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+        return $this;
+    }
+
+    /**
+     * @param mixed $carts
+     * @return CartProduct
+     */
+    public function setCarts($carts)
+    {
+        $this->carts = $carts;
+        return $this;
     }
 
 

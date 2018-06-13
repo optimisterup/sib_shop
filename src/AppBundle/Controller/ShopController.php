@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\Cart;
 use AppBundle\Entity\CartProduct;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -72,7 +71,6 @@ class ShopController extends Controller
         if (!$this->getUser()){
             return $this->redirectToRoute('fos_user_security_login');
         }
-
 //        $em = $this->getDoctrine()->getManager();
 //        $currentUser=$this->getUser();
 //        $addedProduct=$em->getRepository('AppBundle:Product')->find($id);
@@ -116,21 +114,19 @@ class ShopController extends Controller
         $addedProduct=$em->getRepository('AppBundle:Product')->find($id);
         if ($currentUser->getCartProduct()!=null) {
             $cartProduct=$currentUser->getCartProduct();
-
+            $cartProduct->addProduct($addedProduct);
 //            $productInCart=$em->getRepository('AppBundle:CartProduct')->findOneBy(['product'=>$id, 'user'=>$currentUser]);
-
         }else{
             $cartProduct = new CartProduct();
             $cartProduct->setUser($currentUser);
+            $cartProduct->setProducts($addedProduct);
         }
-
 //        $productInCart->addCount();
-
-        $cartProduct->addProduct($addedProduct);
-dump($cartProduct);die;
+        $cartProduct->setProducts($addedProduct);
+        $cartProduct->addCart($cartProduct);
+//dump($cartProduct);die;
         $em->persist($cartProduct);
 //        $em->persist($productInCart);
-
 //        dump(gettype($addedProduct));die;
         $em->flush();
         return $this->redirectToRoute('homepage', []);
@@ -145,7 +141,7 @@ dump($cartProduct);die;
     public function myCart($id)
     {
         $myCart=$this->getDoctrine()->getRepository('AppBundle:CartProduct')->find($id);
-        $myProducts=$myCart->getProduct();
+        $myProducts=$myCart->getProducts();
         $countProductsInCart = $myCart->getCount();
         $currentCartId=$myCart->getId();
 

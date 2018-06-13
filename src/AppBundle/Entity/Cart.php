@@ -18,7 +18,6 @@ class Cart
      */
     protected $id;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="CartProduct", inversedBy="carts")
      * @ORM\JoinColumn(name="cart", referencedColumnName="id")
@@ -32,45 +31,6 @@ class Cart
     {
         return $this->id;
     }
-
-//    /**
-//     * @param $user
-//     */
-//    public function setUser($user)
-//    {
-//        $this->user = $user;
-//    }
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getUser()
-//    {
-//        return $this->user;
-//    }
-//
-//    public function __toString()
-//    {
-//        return (string) $this->user;
-//    }
-
-//    /**
-//     * @param mixed $products
-//     * @return Cart
-//     */
-//    public function setProducts($products)
-//    {
-//        $this->products = $products;
-//        return $this;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getProducts()
-//    {
-//        return $this->products;
-//    }
 
     /**
      * @param mixed $cart
