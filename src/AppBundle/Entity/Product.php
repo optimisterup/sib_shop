@@ -43,14 +43,6 @@ class Product
     private $category;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Cart", mappedBy="products")
-     **/
-    private $basket;
-
-//    /**
-//     * @ORM\OneToMany(targetEntity="ProductMedia", mappedBy="product", cascade={"persist","remove"}, orphanRemoval=true)
-//     */
-    /**
      * @ORM\ManyToMany(targetEntity="ProductMedia", cascade={"persist","remove"}, orphanRemoval=true)
      * @ORM\JoinTable(name="media_user",
      *      joinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")},
@@ -60,7 +52,6 @@ class Product
     private $media;
 
     public function __construct() {
-        $this->basket = new ArrayCollection();
         $this->media  = new ArrayCollection();
     }
 
@@ -171,35 +162,4 @@ class Product
         $this->category = $category;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getBasket()
-    {
-        return $this->basket;
-    }
-
-    /**
-     * Add basket
-     *
-     * @param \AppBundle\Entity\Cart $basket
-     *
-     * @return Product
-     */
-    public function addBasket(\AppBundle\Entity\Cart $basket)
-    {
-        $this->basket[] = $basket;
-
-        return $this;
-    }
-
-    /**
-     * Remove basket
-     *
-     * @param \AppBundle\Entity\Cart $basket
-     */
-    public function removeBasket(\AppBundle\Entity\Cart $basket)
-    {
-        $this->basket->removeElement($basket);
-    }
 }

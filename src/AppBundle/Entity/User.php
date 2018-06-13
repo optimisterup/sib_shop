@@ -20,7 +20,6 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToOne(targetEntity="Cart", mappedBy="user")
-     * @ORM\Column(nullable=true)
      */
     private $cart;
 
@@ -39,7 +38,7 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getcart()
+    public function getCart()
     {
         return $this->cart;
     }
@@ -47,7 +46,7 @@ class User extends BaseUser
     /**
      * @param mixed $cart
      */
-    public function setcart($cart)
+    public function setCart($cart)
     {
         $this->cart = $cart;
     }

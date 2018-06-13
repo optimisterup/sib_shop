@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,11 +24,63 @@ class Cart
      **/
     private $user;
 
+//    /**
+//     * @ORM\ManyToOne(targetEntity="CartProduct", inversedBy="product_id")
+//     * @ORM\JoinColumn(name="product", referencedColumnName="id")
+//     **/
+//    private $product;
+
+//    /**
+//     * @ORM\Column(type="datetime")
+//     * @var \DateTime
+//     */
+//    private $updatedAt;
+
     /**
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="cart")
-     * @ORM\JoinTable(name="products_cart")
+     * @ORM\ManyToMany(targetEntity="Product")
+     * @ORM\JoinTable(name="cart_product",
+     *      joinColumns={@ORM\JoinColumn(name="name", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="product", referencedColumnName="id", unique=false)}
+     *      )
      */
-    private $products;
+    private $product;
+
+    public function __construct() {
+        $this->product = new ArrayCollection();
+    }
+
+    /**
+     * @param Product $product
+     * @return $this
+     */
+    public function addProduct(Product $product)
+    {
+        if ($product) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+        $this->product[] = $product;
+        return $this;
+    }
+
+    /**
+     * Remove product
+     * @param Product $product
+     */
+    public function removeProduct(Product $product)
+    {
+        $this->product->removeElement($product);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProducts()
+    {
+        return $this->product;
+    }
+
+
 
     /**
      * @return mixed
@@ -53,24 +106,9 @@ class Cart
         return $this->user;
     }
 
-    /**
-     * @param $products
-     */
-    public function setProducts($products)
-    {
-        $this->products = $products;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
     public function __toString()
     {
         return (string) $this->user;
     }
+
 }
