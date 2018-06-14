@@ -95,7 +95,7 @@ class ShopController extends Controller
             $findProduct=$em->getRepository('AppBundle:CartProduct')
                             ->findOneBy([
                                     'products'=>$id,
-                                'user'=>$currentUserId]);
+                                    'user'=>$currentUserId]);
             if ($findProduct!=null){
                 $findProduct->addCount();
                 $em->persist($findProduct);
@@ -111,15 +111,13 @@ class ShopController extends Controller
 
     /**
      * @Route("/my_cart/{id}", name="my_cart")
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function myCart($id)
+    public function myCart()
     {
         $currentUser=$this->getUser();
         $myCart=$currentUser->getCart();
         $myProducts=$myCart->getProducts();
-//        dump($myProducts);die;
         $countProductsInCart = $myCart->getCount();
         $currentCartId=$myCart->getId();
 
@@ -157,6 +155,31 @@ class ShopController extends Controller
         }
         return $this->redirectToRoute('homepage', []);
     }
+
+//    /**
+//     * @Route("/delivary", name="delivary")
+//     */
+//    public function delivaryCart()
+//    {
+//        if (!$this->getUser()){
+//            return $this->redirectToRoute('fos_user_security_login');
+//        }
+//        $currentUser=$this->getUser();
+//        if ($currentUser->hasCart()) {
+//            $cart = $this->getUser()->getCart();
+//            $em = $this->getDoctrine()->getManager();
+//            $repository = $em->getRepository('AppBundle:CartProduct');
+//            $ship = $repository->findBy(array('user' => $currentUser));
+//        }
+//
+//        return $this->render('default/delivary.html.twig', array(
+//            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+//        ));
+//    }
+
+
+
+
 
 
 
