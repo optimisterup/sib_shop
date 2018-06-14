@@ -20,14 +20,14 @@ class ShopController extends Controller
         $products = $this->getDoctrine()->getRepository('AppBundle:Product');
         $currentUser = $this->getUser();
 
-        if ($currentUser->hasCart()!=true){
-            $currentCartId = "#";
-            $countProductsInCart=0;
-        }else{
-            $currentCart=$currentUser->getCart();
-            $currentCartId=$currentCart->getId();
-            $countProductsInCart = $currentCart->getCount();
-        }
+            if ($currentUser==null ||$currentUser->hasCart()!=true){
+                $currentCartId = "#";
+                $countProductsInCart=0;
+            }else{
+                $currentCart=$currentUser->getCart();
+                $currentCartId=$currentCart->getId();
+                $countProductsInCart = $currentCart->getCount();
+            }
 
         return $this->render('default/index.html.twig', [
             'countProductsInCart' => $countProductsInCart,
@@ -53,7 +53,7 @@ class ShopController extends Controller
         $products=$selectedCategory->getProduct();
 
         $currentUser = $this->getUser();
-        if ($currentUser->hasCart()!=true){
+        if ($currentUser==null ||$currentUser->hasCart()!=true){
             $currentCartId = "#";
             $countProductsInCart=0;
         }else{
@@ -84,7 +84,6 @@ class ShopController extends Controller
         $currentUser=$this->getUser();
         $currentUserId=$currentUser->getId();
         $addedProduct=$em->getRepository('AppBundle:Product')->find($id);
-//        dump($currentUser->hasCart());die;
         if ($currentUser->hasCart()!=true){
             $cart=new Cart();
             $cartProduct = new CartProduct();
@@ -101,11 +100,9 @@ class ShopController extends Controller
                 $findProduct->addCount();
                 $em->persist($findProduct);
             }else{
-//                $cartProduct->addCart($currentUser->getCart());
                 $cartProduct->setProducts($addedProduct);
                 $cartProduct->setUser($currentUser);
             }
-//            dump($cartProduct);die;
         }
         $em->persist($cartProduct);
         $em->flush();
@@ -134,27 +131,32 @@ class ShopController extends Controller
         ));
     }
 
+    /**
+     * @Route("/cart/clear", name="clear cart")
+     */
+    public function clearCart()
+    {
+        if (!$this->getUser()){
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+        $currentUser=$this->getUser();
+        if ($currentUser->hasCart()) {
 
-
-//    /**
-//     * @Route("/cart/clear/{cart}", name="clear cart")
-//     */
-//    public function clearActione($cart)
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//        $repository = $em->getRepository('AppBundle:CartProduct');
-//        $ship = $repository->findBy(array('cart' => $cart));
-//        foreach ($ship as $one_prod)
-//        {
-//            $em->remove($one_prod);
-//            $em->flush();
-//        }
-//        $cart_repository = $em->getRepository('AppBundle:Cart');
-//        $one_cart = $cart_repository->findOneById($cart);
-//        $em->remove($one_cart);
-//        $em->flush();
-//        return $this->redirect($this->generateUrl('view cart'));
-//    }
+            $cart = $this->getUser()->getCart();
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('AppBundle:CartProduct');
+            $ship = $repository->findBy(array('user' => $currentUser));
+            foreach ($ship as $one_prod) {
+                $em->remove($one_prod);
+                $em->flush();
+            }
+            $cart_repository = $em->getRepository('AppBundle:Cart');
+//            $one_cart = $cart_repository->findOneById($cartId);
+//            $em->remove($one_cart);
+            $em->flush();
+        }
+        return $this->redirectToRoute('homepage', []);
+    }
 
 
 

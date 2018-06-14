@@ -24,8 +24,6 @@ class Cart
      */
     private $cart;
 
-
-
     /**
      * @return mixed
      */
