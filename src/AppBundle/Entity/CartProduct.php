@@ -22,7 +22,7 @@ class CartProduct
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Cart", mappedBy="cart")
+     * @ORM\OneToMany(targetEntity="Cart", mappedBy="cart", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="carts", referencedColumnName="id")
      */
     private $carts;
@@ -36,7 +36,13 @@ class CartProduct
     /**
     * @ORM\Column(type="integer")
     */
-    private $count=0;
+    private $count=1;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User", inversedBy="cart")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
 
     /**
      * @return mixed
@@ -47,7 +53,7 @@ class CartProduct
     }
 
     public function __construct() {
-        $this->carts    = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     /**
@@ -118,7 +124,27 @@ class CartProduct
      */
     public function setCarts($carts)
     {
+//        $carts->setCartProduct($this);
         $this->carts = $carts;
         return $this;
+    }
+
+    /**
+     * @param mixed $user
+     * @return CartProduct
+     */
+    public function setUser($user)
+    {
+        $user->setCart($this);
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

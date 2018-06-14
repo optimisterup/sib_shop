@@ -19,7 +19,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Cart", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="CartProduct", mappedBy="user")
      */
     private $cart;
 
@@ -28,6 +28,14 @@ class User extends BaseUser
     * @ORM\JoinColumn(name= "media_id", referencedColumnName="id")
     */
     private $media;
+
+    public function hasCart(){
+        if ($this->cart){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public function __construct()
     {

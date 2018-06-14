@@ -16,15 +16,13 @@ class ShopController extends Controller
      */
     public function indexAction()
     {
-
         $allCategories = $this->getDoctrine()->getManager()->getRepository('AppBundle:Category')->findAll();
         $products = $this->getDoctrine()->getRepository('AppBundle:Product');
-
         $currentUser = $this->getUser();
-        if (is_null($currentUser->getCart())){
+
+        if ($currentUser->hasCart()!=true){
             $currentCartId = "#";
             $countProductsInCart=0;
-
         }else{
             $currentCart=$currentUser->getCart();
             $currentCartId=$currentCart->getId();
@@ -55,10 +53,9 @@ class ShopController extends Controller
         $products=$selectedCategory->getProduct();
 
         $currentUser = $this->getUser();
-        if (is_null($currentUser->getCart())){
+        if ($currentUser->hasCart()!=true){
             $currentCartId = "#";
             $countProductsInCart=0;
-
         }else{
             $currentCart=$currentUser->getCart();
             $currentCartId=$currentCart->getId();
@@ -83,67 +80,37 @@ class ShopController extends Controller
         if (!$this->getUser()){
             return $this->redirectToRoute('fos_user_security_login');
         }
-//        $em = $this->getDoctrine()->getManager();
-//        $currentUser=$this->getUser();
-//        $addedProduct=$em->getRepository('AppBundle:Product')->find($id);
-//
-//        if ($currentUser->getCartProduct()!=null) {
-//            $cartProduct=$currentUser->getCartProduct();
-//                $productsInCart=$cartProduct->getProduct();
-//                for($i=0; $i<count($productsInCart); $i++){
-//                    if($productsInCart[$i]->getId()==$id){
-//                        dump($productsInCart[0]) ;die;
-//                        break;
-//                    }
-//                }
-//        }else{
-//            $cartProduct = new CartProduct();
-//            $cartProduct->setUser($currentUser);
-//        }
-////
-//            foreach ($productsInCart as $value){
-//                if ($value->getId()==$id){
-//                    $productsInCart->addCount();
-//                    break;
-//                }
-//            }
-////
-////        $cartProductRepository=$em->getRepository('AppBundle:CartProduct');
-////        $cartProductRepository->findBy(['product'=>$id]);
-////        dump($cartProductRepository);die;
-////        if (){
-////            $cartProduct->addCount();
-////        }else{
-////            $cartProduct->addProduct($addedProduct);
-////        }
-//
-//
-//        $em->persist($cartProduct);
-//        $em->flush();
-////        dump($cartProduct);die;
         $em = $this->getDoctrine()->getManager();
         $currentUser=$this->getUser();
+        $currentUserId=$currentUser->getId();
         $addedProduct=$em->getRepository('AppBundle:Product')->find($id);
-        if ($currentUser->getCart()!=null) {
-            $cart=$currentUser->getCart();
-            $cartProduct=$em->getRepository('AppBundle:Cart')->find($cart);
-            $cartProduct->setProducts($addedProduct);
-            $productInCart=$em->getRepository('AppBundle:CartProduct')->findOneBy(['product'=>$id, 'user'=>$currentUser]);
-            $productInCart->addCount();
-        }else{
+//        dump($currentUser->hasCart());die;
+        if ($currentUser->hasCart()!=true){
+            $cart=new Cart();
             $cartProduct = new CartProduct();
             $cartProduct->setProducts($addedProduct);
+            $cartProduct->addCart($cart);
+            $cartProduct->setUser($currentUser);
+        }else{
+            $cartProduct=$currentUser->getCart();
+            $findProduct=$em->getRepository('AppBundle:CartProduct')
+                            ->findOneBy([
+                                    'products'=>$id,
+                                'user'=>$currentUserId]);
+            if ($findProduct!=null){
+                $findProduct->addCount();
+                $em->persist($findProduct);
+            }else{
+//                $cartProduct->addCart($currentUser->getCart());
+                $cartProduct->setProducts($addedProduct);
+                $cartProduct->setUser($currentUser);
+            }
+//            dump($cartProduct);die;
         }
-//        $cartProduct->setProducts($addedProduct);
-        $cartProduct->addCart($cart);
-//dump($cartProduct);die;
         $em->persist($cartProduct);
-//        $em->persist($productInCart);
-//        dump(gettype($addedProduct));die;
         $em->flush();
         return $this->redirectToRoute('homepage', []);
     }
-
 
     /**
      * @Route("/my_cart/{id}", name="my_cart")
@@ -152,8 +119,10 @@ class ShopController extends Controller
      */
     public function myCart($id)
     {
-        $myCart=$this->getDoctrine()->getRepository('AppBundle:CartProduct')->find($id);
+        $currentUser=$this->getUser();
+        $myCart=$currentUser->getCart();
         $myProducts=$myCart->getProducts();
+//        dump($myProducts);die;
         $countProductsInCart = $myCart->getCount();
         $currentCartId=$myCart->getId();
 
@@ -164,5 +133,29 @@ class ShopController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ));
     }
+
+
+
+//    /**
+//     * @Route("/cart/clear/{cart}", name="clear cart")
+//     */
+//    public function clearActione($cart)
+//    {
+//        $em = $this->getDoctrine()->getManager();
+//        $repository = $em->getRepository('AppBundle:CartProduct');
+//        $ship = $repository->findBy(array('cart' => $cart));
+//        foreach ($ship as $one_prod)
+//        {
+//            $em->remove($one_prod);
+//            $em->flush();
+//        }
+//        $cart_repository = $em->getRepository('AppBundle:Cart');
+//        $one_cart = $cart_repository->findOneById($cart);
+//        $em->remove($one_cart);
+//        $em->flush();
+//        return $this->redirect($this->generateUrl('view cart'));
+//    }
+
+
 
 }
