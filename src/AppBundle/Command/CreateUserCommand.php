@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\ProductMedia;
 use DOMXPath;
@@ -79,12 +80,25 @@ class CreateUserCommand extends ContainerAwareCommand
             }
             $em->flush();
         }
+        $categorys=['phones','other','new'];
+        for ($i = 0; $i < count($categorys); $i++) {
+            $category[$i] = new Category();
+            $category[$i]->setName($categorys[$i]);
+            $em->persist($category[$i]);
+            $em->flush();
+        }
 
+        $j=0;
         for ($i = 0; $i < count($product_name); $i++) {
+            if($j>2){
+                $j=0;
+            }
             $product = new Product();
             $product->setName($product_name[$i]);
             $product->setPrice($product_price[$i]);
             $product->addMedia($array_product_media[$i]);
+            $product->setCategory($category[$j]);
+            $j++;
             $em->persist($product);
         }
 

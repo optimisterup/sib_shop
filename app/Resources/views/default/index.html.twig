@@ -244,10 +244,9 @@
             </div>
 
             <div class="header_search">
-                <form role="search" method="get" action="#">
-                    <input type="search" name="s" value="" placeholder="Поиск по каталогу..." autocomplete="off"/>
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
@@ -298,8 +297,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 col-md-5 main_about_img">
-                    <img width="800" height="545" src="#"
-                         class="img-responsive wp-post-image" alt="Главная"/></div>
+                    </div>
                 <div class="col-md-7">
                     <div class="page_subtitle">О компании</div>
 

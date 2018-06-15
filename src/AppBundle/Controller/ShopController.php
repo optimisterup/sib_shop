@@ -4,17 +4,23 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Cart;
 use AppBundle\Entity\CartProduct;
+use AppBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class ShopController extends Controller
 {
 
     /**
      * @Route("/", name="homepage")
+     * @Method({"GET","HEAD","POST"})
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $allCategories = $this->getDoctrine()->getManager()->getRepository('AppBundle:Category')->findAll();
         $products = $this->getDoctrine()->getRepository('AppBundle:Product');
@@ -29,7 +35,38 @@ class ShopController extends Controller
             $countProductsInCart = $currentCart->getCount();
         }
 
+
+        $article = new Product();
+        $form_builder = $this->createFormBuilder($article);
+        $form_builder->add('name', TextType::class);
+        $form_builder->add('save', SubmitType::class, array('label' => 'find'));
+
+        $form = $form_builder->getForm();
+
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+//            dump();die;
+                $word=$form->getViewData()->getName();
+            $products = $this
+                ->getDoctrine()
+                ->getRepository('AppBundle:Product')
+                ->createQueryBuilder('p')
+                ->where('p.name LIKE :word')
+                ->setParameter('word', "%$word%")
+                ->getQuery()
+                ->getResult();
+
+            return $this->render('default/find.html.twig', [
+                'products' => $products,
+                'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
+            ]);
+        }
+
+
+
         return $this->render('default/index.html.twig', [
+            'form' => $form->createView(),
             'countProductsInCart' => $countProductsInCart,
             'products' => $products,
             'categories' => $allCategories,
@@ -155,4 +192,5 @@ class ShopController extends Controller
         }
         return $this->redirectToRoute('homepage', []);
     }
+
 }
