@@ -36,8 +36,8 @@ class ShopController extends Controller
         }
 
 
-        $article = new Product();
-        $form_builder = $this->createFormBuilder($article);
+        $prod = new Product();
+        $form_builder = $this->createFormBuilder($prod);
         $form_builder->add('name', TextType::class);
         $form_builder->add('save', SubmitType::class, array('label' => 'find'));
 
@@ -78,9 +78,11 @@ class ShopController extends Controller
     /**
      * @Route("/select/{id}", requirements={"id" = "\d+"})
      * @param $id
+     * @Method({"GET","HEAD","POST"})
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function selectCategory($id)
+    public function selectCategory($id, Request$request)
     {
 
         $allCategories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
@@ -99,7 +101,37 @@ class ShopController extends Controller
             $currentCartId = $currentCart->getId();
             $countProductsInCart = $currentCart->getCount();
         }
+
+        $prod = new Product();
+        $form_builder = $this->createFormBuilder($prod);
+        $form_builder->add('name', TextType::class);
+        $form_builder->add('save', SubmitType::class, array('label' => 'find'));
+
+        $form = $form_builder->getForm();
+
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+//            dump();die;
+            $word=$form->getViewData()->getName();
+            $products = $this
+                ->getDoctrine()
+                ->getRepository('AppBundle:Product')
+                ->createQueryBuilder('p')
+                ->where('p.name LIKE :word')
+                ->setParameter('word', "%$word%")
+                ->getQuery()
+                ->getResult();
+
+            return $this->render('default/find.html.twig', [
+                'products' => $products,
+                'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
+            ]);
+        }
+
         return $this->render('default/index.html.twig', array(
+            'form' => $form->createView(),
+
             'countProductsInCart' => $countProductsInCart,
             'products' => $products,
             'categories' => $allCategories,
