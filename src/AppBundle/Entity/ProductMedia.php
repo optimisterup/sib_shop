@@ -35,5 +35,23 @@ class ProductMedia extends Media
     {
         return $this->imageFile;
     }
+
+    /**
+     * @param mixed $product
+     * @return ProductMedia
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
 }
 

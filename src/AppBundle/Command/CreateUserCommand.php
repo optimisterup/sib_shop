@@ -12,6 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateUserCommand extends ContainerAwareCommand
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     protected function configure()
     {
