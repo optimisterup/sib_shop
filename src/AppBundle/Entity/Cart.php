@@ -50,23 +50,4 @@ class Cart
         return $this->cart;
     }
 
-    /**
-     * @param mixed $user
-     * @return Cart
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-
 }

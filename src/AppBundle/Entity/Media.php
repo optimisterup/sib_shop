@@ -40,7 +40,6 @@ Abstract class Media
     {
         $this->image = $image;
         if ($image) {
-            // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
         }
     }

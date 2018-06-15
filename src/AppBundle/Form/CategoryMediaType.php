@@ -14,7 +14,6 @@ class CategoryMediaType extends AbstractType
         $builder
             ->add('imageFile', VichImageType::class, array(
                 'required'      => true,
-                //'mapped'       => 'product',
                 'allow_delete'  => true,
                 'by_reference'  => false
             ));

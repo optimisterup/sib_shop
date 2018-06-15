@@ -27,12 +27,7 @@ class ArrayToObjectTransformer implements DataTransformerInterface
 
         return $media->getId();
     }
-//
-//    /**
-//     * Transforms a object to array.
-//     * @param $userMediaNumber
-//     * @return object|void
-//     */
+
     public function reverseTransform($mediaArray)
     {
         // no issue number? It's optional, so that's ok

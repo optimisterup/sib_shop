@@ -90,9 +90,6 @@ fos_user:
     registration:
         confirmation:
             template:   '@FOSUser/Registration/email.txt.twig'
-#    profile:
-#        form:
-#            type: AppBundle\Form\ProfileFormType
 easy_admin:
     entities:
         # change the following to the namespaces of your own entities
@@ -119,14 +116,9 @@ easy_admin:
             list:
                 fields:
                     - id
-#                      - product
                     - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
-#                      - imageFile
-#                      - updatedAt
             form:
                 fields:
-#                      - product
-#                      - imageFile
                     - { property: 'imageFile', type: 'AppBundle\Form\UserMedia'}
             show:
                 fields:
@@ -148,7 +140,6 @@ easy_admin:
                     - description
                     - price
                     - category
-#                    - {property: 'media', type: 'AppBundle\Form\ProductMediaType'}
                     - { property: 'media', type: 'collection', type_options: { entry_type: 'AppBundle\Form\ProductMediaType', by_reference: true } }
             show:
                 fields:
@@ -173,35 +164,6 @@ easy_admin:
                         - {property: 'plainPassword', type: 'password', type_options: {required:false}}
                         - {property: 'roles', type: 'choice', type_options: {multiple: true, choices: {'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' }}}
                         - {property: 'media', type: 'AppBundle\Form\UserMediaType'}
-#              list:
-#                  fields:
-#                      - id
-#                      - username
-##                      - usernameCanonical
-#                      - email
-#                      - enabled
-#                      - plainPassword
-##                      - image
-##                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%'}
-#                      - password
-#                      - basket
-#                      - roles
-#                      - order
-#                      - cart
-#                      - media
-#              show:
-#                  fields:
-#                      - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
-
-
-#        Order:
-#            class: AppBundle\Entity\Order
-#            list:
-#                fields:
-#                    - id
-#                    - user
-#                    - products
-#                    - delivary
 vich_uploader:
     db_driver: orm
     mappings:

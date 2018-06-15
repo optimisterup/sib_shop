@@ -124,7 +124,6 @@ class CartProduct
      */
     public function setCarts($carts)
     {
-//        $carts->setCartProduct($this);
         $this->carts = $carts;
         return $this;
     }

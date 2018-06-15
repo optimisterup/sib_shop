@@ -13,12 +13,6 @@ use Symfony\Component\Form\CallbackTransformer;
 
 class UserMediaType extends AbstractType
 {
-//    private $transformer;
-//
-//    public function __construct(EntityManager $manager)
-//    {
-//        $this->transformer = new ArrayToObjectTransformer($manager);
-//    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -26,13 +20,9 @@ class UserMediaType extends AbstractType
         $builder
             ->add('imageFile', VichImageType::class, array(
                 'required' => true,
-//                'mapped'       => 'product',
                 'allow_delete' => true,
                 'by_reference' => false,
-//                'invalid_message' => 'That is not a valid issue number',
             ));
-        /*$builder->get('imageFile')
-            ->addModelTransformer($this->transformer);*/
     }
 
     public function configureOptions(OptionsResolver $resolver)
