@@ -82,7 +82,6 @@ class ShopController extends Controller
      */
     public function selectCategory($id, Request $request)
     {
-
         $allCategories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
         $selectedCategory = $this
             ->getDoctrine()
@@ -189,19 +188,26 @@ class ShopController extends Controller
         $findCartProduct =
             $em->getRepository('AppBundle:CartProduct')
                 ->findBy(['carts' => $myCart]);
-        $countProductsInCart = 0;
         foreach ($findCartProduct as $value) {
             $myProducts[] = $value->getProducts();
-            $countProductsInCart += $value->getCount();
+            $countProduct[] = $value->getCount();
         }
+
+//        dump($countProduct);die;
+
+        $countProductsInCart=0;
+        $countProductsInCart =array_sum($countProduct);
         $currentCartId = $myCart->getId();
         return $this->render('default/cart.html.twig', array(
             'countProductsInCart' => $countProductsInCart,
+            'countProduct'=>$countProduct,
             'products' => $myProducts,
             'currentCartId' => $currentCartId,
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
         ));
     }
+
+
 
     /**
      * @Route("/cart/clear", name="clear cart")
