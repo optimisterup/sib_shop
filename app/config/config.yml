@@ -197,3 +197,11 @@ assetic:
     use_controller: '%kernel.debug%'
     filters:
         cssrewrite: ~
+jms_payment_core:
+    encryption:
+        secret: def00000afa66a62ec65dd8d0f058437540f406be2d10bfa76ac238f61806076359291995242a827c75238ec103745d27d4afc3b4f827a0625119a8ee942d8a40413293e
+
+jms_payment_paypal:
+    username: k160095_api1.nwytg.com
+    password: LUA6HFDYUETV9HAU
+    signature: AyrrLGLfYacCYNwpFDpZiX1WE15pAEXel6G4ly9ma7ofcs3qphw3p1b2

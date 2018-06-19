@@ -3,10 +3,11 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Payment\CoreBundle\Entity\PaymentInstruction;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="sb_order")
+ * @ORM\Table(name="orders")
  */
 class Order
 {
@@ -16,6 +17,37 @@ class Order
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /** @ORM\OneToOne(targetEntity="JMS\Payment\CoreBundle\Entity\PaymentInstruction") */
+    private $paymentInstruction;
+
+    /** @ORM\Column(type="decimal", precision=10, scale=5) */
+    private $amount;
+
+    public function __construct($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    public function getPaymentInstruction()
+    {
+        return $this->paymentInstruction;
+    }
+
+    public function setPaymentInstruction(PaymentInstruction $instruction)
+    {
+        $this->paymentInstruction = $instruction;
+    }
 
 //    private $user;
 //
