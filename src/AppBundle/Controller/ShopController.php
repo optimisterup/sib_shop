@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 class ShopController extends Controller
 {
 
@@ -32,22 +33,21 @@ class ShopController extends Controller
         } else {
             $currentCart = $currentUser->getCart();
             $currentCartId = $currentCart->getId();
-            $countProductsInCart = $currentCart->getCount();
+            $cartProduct =
+                $this->getDoctrine()
+                    ->getRepository('AppBundle:CartProduct')
+                    ->findOneBy(['carts' => $currentCartId]);
+            $countProductsInCart = $cartProduct->getCount();
         }
-
 
         $prod = new Product();
         $form_builder = $this->createFormBuilder($prod);
         $form_builder->add('name', TextType::class);
         $form_builder->add('save', SubmitType::class, array('label' => 'find'));
-
         $form = $form_builder->getForm();
-
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-//            dump();die;
-                $word=$form->getViewData()->getName();
+            $word = $form->getViewData()->getName();
             $products = $this
                 ->getDoctrine()
                 ->getRepository('AppBundle:Product')
@@ -62,8 +62,6 @@ class ShopController extends Controller
                 'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
             ]);
         }
-
-
 
         return $this->render('default/index.html.twig', [
             'form' => $form->createView(),
@@ -82,7 +80,7 @@ class ShopController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function selectCategory($id, Request$request)
+    public function selectCategory($id, Request $request)
     {
 
         $allCategories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
@@ -99,21 +97,22 @@ class ShopController extends Controller
         } else {
             $currentCart = $currentUser->getCart();
             $currentCartId = $currentCart->getId();
-            $countProductsInCart = $currentCart->getCount();
+            $cartProduct =
+                $this->getDoctrine()
+                    ->getRepository('AppBundle:CartProduct')
+                    ->findOneBy(['carts' => $currentCartId]);
+            $countProductsInCart = $cartProduct->getCount();
         }
 
         $prod = new Product();
         $form_builder = $this->createFormBuilder($prod);
         $form_builder->add('name', TextType::class);
         $form_builder->add('save', SubmitType::class, array('label' => 'find'));
-
         $form = $form_builder->getForm();
-
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-//            dump();die;
-            $word=$form->getViewData()->getName();
+            $word = $form->getViewData()->getName();
             $products = $this
                 ->getDoctrine()
                 ->getRepository('AppBundle:Product')
@@ -152,28 +151,28 @@ class ShopController extends Controller
         }
         $em = $this->getDoctrine()->getManager();
         $currentUser = $this->getUser();
-        $currentUserId = $currentUser->getId();
         $addedProduct = $em->getRepository('AppBundle:Product')->find($id);
         if ($currentUser->hasCart() != true) {
             $cart = new Cart();
+            $cart->setUser($currentUser);
             $cartProduct = new CartProduct();
             $cartProduct->setProducts($addedProduct);
             $cartProduct->addCart($cart);
-            $cartProduct->setUser($currentUser);
+            $em->persist($cartProduct);
         } else {
-            $cartProduct = $currentUser->getCart();
-            $findProduct = $em->getRepository('AppBundle:CartProduct')
-                ->findOneBy(['products' => $id,
-                    'user' => $currentUserId]);
-            if ($findProduct != null) {
-                $findProduct->addCount();
-                $em->persist($findProduct);
+            $cart = $currentUser->getCart();
+            $findCartProduct = $em->getRepository('AppBundle:CartProduct')
+                ->findOneBy(['carts' => $cart, 'products' => $addedProduct]);
+            if ($findCartProduct != null) {
+                $findCartProduct->addCount();
+                $em->persist($findCartProduct);
             } else {
+                $cartProduct = new CartProduct();
                 $cartProduct->setProducts($addedProduct);
-                $cartProduct->setUser($currentUser);
+                $cartProduct->addCart($cart);
+                $em->persist($cartProduct);
             }
         }
-        $em->persist($cartProduct);
         $em->flush();
         return $this->redirectToRoute('homepage', []);
     }
@@ -186,10 +185,16 @@ class ShopController extends Controller
     {
         $currentUser = $this->getUser();
         $myCart = $currentUser->getCart();
-        $myProducts = $myCart->getProducts();
-        $countProductsInCart = $myCart->getCount();
+        $em = $this->getDoctrine()->getManager();
+        $findCartProduct =
+            $em->getRepository('AppBundle:CartProduct')
+                ->findBy(['carts' => $myCart]);
+        $countProductsInCart = 0;
+        foreach ($findCartProduct as $value) {
+            $myProducts[] = $value->getProducts();
+            $countProductsInCart += $value->getCount();
+        }
         $currentCartId = $myCart->getId();
-
         return $this->render('default/cart.html.twig', array(
             'countProductsInCart' => $countProductsInCart,
             'products' => $myProducts,

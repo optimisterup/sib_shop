@@ -19,10 +19,20 @@ class Cart
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CartProduct", inversedBy="carts")
-     * @ORM\JoinColumn(name="cart", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="CartProduct", mappedBy="carts")
      */
     private $cart;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User", inversedBy="cart")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
+
+    public function __construct()
+    {
+        $this->cart=new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -48,6 +58,24 @@ class Cart
     public function getCart()
     {
         return $this->cart;
+    }
+
+    /**
+     * @param mixed $user
+     * @return Cart
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
 }

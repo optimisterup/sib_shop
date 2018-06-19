@@ -19,7 +19,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="CartProduct", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="Cart", mappedBy="user")
      */
     private $cart;
 
@@ -75,6 +75,8 @@ class User extends BaseUser
      */
     public function setCart($cart)
     {
+
+        $cart->setUser($this);
         $this->cart = $cart;
         return $this;
     }
