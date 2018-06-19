@@ -7,6 +7,7 @@ use AppBundle\Entity\CartProduct;
 use AppBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -180,7 +181,7 @@ class ShopController extends Controller
      * @Route("/my_cart/{id}", name="my_cart")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function myCart()
+    public function myCart(Request $request)
     {
         $currentUser = $this->getUser();
         $myCart = $currentUser->getCart();
@@ -192,22 +193,35 @@ class ShopController extends Controller
             $myProducts[] = $value->getProducts();
             $countProduct[] = $value->getCount();
         }
-
-//        dump($countProduct);die;
-
-        $countProductsInCart=0;
         $countProductsInCart =array_sum($countProduct);
         $currentCartId = $myCart->getId();
+
+//////////////////
+        $prod = new CartProduct();
+        $form_builder = $this->createFormBuilder($prod);
+        $form_builder->add('count', IntegerType::class);
+        $form_builder->add('save', SubmitType::class, array('label' => 'save'));
+        $form = $form_builder->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+          $count=$form->getData();
+          $em=$this->getDoctrine()->getManager();
+          $em->persist($count);
+          $em->flush();
+            return $this->redirectToRoute('my_cart');
+        }
+/////////////////////////////////
+
         return $this->render('default/cart.html.twig', array(
             'countProductsInCart' => $countProductsInCart,
             'countProduct'=>$countProduct,
             'products' => $myProducts,
             'currentCartId' => $currentCartId,
+            'form' => $form->createView(),
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
         ));
     }
-
-
 
     /**
      * @Route("/cart/clear", name="clear cart")

@@ -287,6 +287,10 @@
                     <td>Не найдено ни одного товара</td>
                 </tr>
             {% endfor %}
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
     </table>
     <div class="box_content box_gray main_about">
         <div class="container">
