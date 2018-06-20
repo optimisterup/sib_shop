@@ -24,6 +24,14 @@ class Delivary
      */
     private $status;
 
+    /** @ORM\Column(type="decimal", precision=10, scale=2) */
+    private $amount;
+
+    public function __construct($amount)
+    {
+        $this->amount=$amount;
+    }
+
     /**
      * @return mixed
      */
@@ -46,6 +54,14 @@ class Delivary
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 
 

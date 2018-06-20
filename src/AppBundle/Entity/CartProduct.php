@@ -39,6 +39,13 @@ class CartProduct
     private $count=1;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="cartProduct")
+     * @ORM\JoinColumn(name="order", referencedColumnName="id", unique=false)
+     */
+    private $order;
+
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -122,4 +129,21 @@ class CartProduct
         return $this;
     }
 
+    /**
+     * @param mixed $order
+     * @return CartProduct
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
 }
