@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 class OrdersController extends Controller
 {
     /**
-     * @Route("/new/{amount}")
+     * @Route("/new/{amount}", name="orders_new")
      */
     public function newAction($amount)
     {
@@ -45,7 +45,7 @@ class OrdersController extends Controller
     {
         $form = $this->createForm(ChoosePaymentMethodType::class, null, [
             'amount'   => $order->getAmount(),
-            'currency' => 'EUR',
+            'currency' => 'USD',
         ]);
 
         $form->handleRequest($request);
@@ -90,6 +90,8 @@ class OrdersController extends Controller
 
     /**
      * @Route("/{id}/payment/create")
+     * @param Order $order
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function paymentCreateAction(Order $order)
     {
@@ -111,7 +113,6 @@ class OrdersController extends Controller
         }
 
         throw $result->getPluginException();
-
         // In a real-world application you wouldn't throw the exception. You would,
         // for example, redirect to the showAction with a flash message informing
         // the user that the payment was not successful.

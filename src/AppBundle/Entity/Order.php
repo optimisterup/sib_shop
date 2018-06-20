@@ -21,7 +21,7 @@ class Order
     /** @ORM\OneToOne(targetEntity="JMS\Payment\CoreBundle\Entity\PaymentInstruction") */
     private $paymentInstruction;
 
-    /** @ORM\Column(type="decimal", precision=10, scale=5) */
+    /** @ORM\Column(type="decimal", precision=10, scale=2) */
     private $amount;
 
     public function __construct($amount)

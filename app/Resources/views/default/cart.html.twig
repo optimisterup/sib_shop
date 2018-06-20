@@ -288,10 +288,13 @@
                 </tr>
             {% endfor %}
 
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
+        {#{{ form_start(form) }}#}
+        {#{{ form_widget(form) }}#}
+        {#{{ form_end(form) }}#}
     </table>
+
+    <h2 style="color:red;">Your total sum: {{ totalSumCart }}<a href="{{ path('orders_new', {'amount': totalSumCart}) }}">ORDER</a></h2>
+
     <div class="box_content box_gray main_about">
         <div class="container">
             <div class="row">
@@ -403,4 +406,8 @@
     </body>
     </html>
 {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/checkout.js') }}" ></script>
+{% endblock %}
+
 
