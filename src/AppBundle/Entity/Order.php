@@ -1,12 +1,10 @@
 <?php
 namespace AppBundle\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity
- * @ORM\Table(name="sb_order")
+ * @ORM\Table(name="orders")
  */
 class Order
 {
@@ -17,74 +15,37 @@ class Order
      */
     protected $id;
 
-//    private $user;
-//
-//    private $products;
-//
-//    /**
-//     * @ORM\ManyToOne(targetEntity="OrderDelivary", inversedBy="Order")
-//     * @ORM\JoinColumn(name="delivary",referencedColumnName="id")
-//     */
-//    private $delivary;
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getId()
-//    {
-//        return $this->id;
-//    }
-//
-//    /**
-//     * @param $user
-//     */
-//    public function setUser($user)
-//    {
-//        $this->user = $user;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getUser()
-//    {
-//        return $this->user;
-//    }
-//
-//    /**
-//     * @param $products
-//     */
-//    public function setProducts($products)
-//    {
-//        $this->products = $products;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getProducts()
-//    {
-//        return $this->products;
-//    }
-//
-//    public function __toString()
-//    {
-//        return (string) $this->user;
-//    }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getDelivary()
-//    {
-//        return $this->delivary;
-//    }
-//
-//    /**
-//     * @param mixed $delivary
-//     */
-//    public function setDelivary($delivary)
-//    {
-//        $this->delivary = $delivary;
-//    }
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=2)
+     */
+    private $amount;
+    /**
+     * @ORM\OneToMany(targetEntity="TransactionOrder", mappedBy="order")
+     */
+    private $transaction;
+    /**
+     * @ORM\OneToMany(targetEntity="CartProduct", mappedBy="order")
+     */
+    private $cartProduct;
+    public function __construct($amount)
+    {
+        $this->amount = $amount;
+        $this->transaction= new ArrayCollection();
+        $this->cartProduct= new ArrayCollection();
+    }
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+    /**
+     * @return mixed
+     */
+    public function getTransaction()
+    {
+        return $this->transaction;
+    }
 }

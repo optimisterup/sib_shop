@@ -24,7 +24,6 @@ class CreateUserCommand extends ContainerAwareCommand
             // the name of the command (the part after "bin/console")
             ->setName('app:shop-parser');
         $this->addArgument('url', InputArgument::REQUIRED, 'give me your url');
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

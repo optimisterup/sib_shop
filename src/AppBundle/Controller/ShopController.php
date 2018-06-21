@@ -179,6 +179,7 @@ class ShopController extends Controller
 
     /**
      * @Route("/my_cart/{id}", name="my_cart")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function myCart(Request $request)
@@ -190,9 +191,12 @@ class ShopController extends Controller
             $em->getRepository('AppBundle:CartProduct')
                 ->findBy(['carts' => $myCart]);
         foreach ($findCartProduct as $value) {
-            $myProducts[] = $value->getProducts();
+            $product = $value->getProducts();
+            $myProducts[] = $product;
             $countProduct[] = $value->getCount();
+            $sumByProducts[]= $product->getPrice()*$value->getCount();
         }
+        $totalSumCart=array_sum($sumByProducts);
         $countProductsInCart =array_sum($countProduct);
         $currentCartId = $myCart->getId();
 
@@ -216,6 +220,7 @@ class ShopController extends Controller
         return $this->render('default/cart.html.twig', array(
             'countProductsInCart' => $countProductsInCart,
             'countProduct'=>$countProduct,
+            'totalSumCart'=>$totalSumCart,
             'products' => $myProducts,
             'currentCartId' => $currentCartId,
             'form' => $form->createView(),
