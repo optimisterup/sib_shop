@@ -5,7 +5,6 @@ use AppBundle\PayPal\PayPalHttpsConnection;
 use GuzzleHttp\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,10 +19,12 @@ class OrderController extends Controller
     public function newAction()
     {
             $client=new PayPalHttpsConnection();
-            $result=$client->connect();
-//            dump($result);
+            $headers=$client->connect();
+            dump($headers);die;
+
+
         return $this->render('@App/Orders/paypal.html.twig', [
-            'result' => $result
+            'headers' => $headers
         ]);
     }
 }
