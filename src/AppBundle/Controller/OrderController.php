@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 use AppBundle\Entity\PayPal;
+use AppBundle\PayPal\PayPalHttpsConnection;
 use GuzzleHttp\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,7 +19,7 @@ class OrderController extends Controller
      */
     public function newAction()
     {
-            $client=new PayPal();
+            $client=new PayPalHttpsConnection();
             $result=$client->connect();
 //            dump($result);
         return $this->render('@App/Orders/paypal.html.twig', [
