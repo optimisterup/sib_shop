@@ -27,27 +27,6 @@ class PayPalHttpsConnection
 
         return $request->getHeaders()['X-PAYPAL-TOKEN-SERVICE'][0];
     }
-
-//    public function pay()
-//    {
-//
-//        $token=$this->connect();
-//        $client = new Client();
-//        $request = $client->post(
-//            'https://api.sandbox.paypal.com/v1/payments/payment/',[
-//            'headers'=>[
-//                'Accept' => 'application/json',
-//                'Accept-Language' => 'en_US',
-//                'Content-Type' => 'application/x-www-form-urlencoded'
-//            ],
-//            'body' => 'grant_type=client_credentials',
-//            'token'=> [$token],
-//        ]);
-//
-//        return $request;
-//    }
-
-
 }
 
 

@@ -244,9 +244,7 @@
             </div>
 
             <div class="header_search">
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
+
             </div>
         </div>
     </div>
@@ -260,38 +258,40 @@
         </div>
     </div>
 
-    {% for category in categories %}
-        <li><a href="{{ path('app_shop_selectcategory', {'id': category.id}) }}">{{ category.name }}</a></li>
-    {% endfor %}
 
 
-    <table style="text-align: center">
-        <tr>
-            {% set foo = 0 %}
-            {% for product in products %}
-                    {% set foo =foo +1 %}
-            {% if foo is divisible by(3) %}
-                </tr><tr>
-            {% endif %}
-                     {% for media in product.media %}
-                        <td>
-                            {% set runtimeConfig = {"thumbnail": {"size": [50, 50] }} %}
-                            <img src="{{ vich_uploader_asset(media, 'imageFile') | imagine_filter('my_watermark_filter') }}"/>
-                    {% endfor %}
-                            <div>
-                                <h4>{{ product.name }}</h4>
-                                <span>{{ product.price }}</span>
-                                <span><a href="{{ path('add_product', {'id': product.id}) }}">CART</a></span>
-                                <hr>
-                            </div>
-                        </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td>Не найдено ни одного товара</td>
-                </tr>
-            {% endfor %}
-    </table>
+    {#{% for category in categories %}#}
+        {#<li><a href="{{ path('app_shop_selectcategory', {'id': category.id}) }}">{{ category.name }}</a></li>#}
+    {#{% endfor %}#}
+
+
+    {#<table style="text-align: center">#}
+        {#<tr>#}
+            {#{% set foo = 0 %}#}
+            {#{% for product in products %}#}
+                    {#{% set foo =foo +1 %}#}
+            {#{% if foo is divisible by(3) %}#}
+                {#</tr><tr>#}
+            {#{% endif %}#}
+                     {#{% for media in product.media %}#}
+                        {#<td>#}
+                            {#{% set runtimeConfig = {"thumbnail": {"size": [50, 50] }} %}#}
+                            {#<img src="{{ vich_uploader_asset(media, 'imageFile') | imagine_filter('my_watermark_filter') }}"/>#}
+                    {#{% endfor %}#}
+                            {#<div>#}
+                                {#<h4>{{ product.name }}</h4>#}
+                                {#<span>{{ product.price }}</span>#}
+                                {#<span><a href="{{ path('add_product', {'id': product.id}) }}">CART</a></span>#}
+                                {#<hr>#}
+                            {#</div>#}
+                        {#</td>#}
+                {#</tr>#}
+            {#{% else %}#}
+                {#<tr>#}
+                    {#<td>Не найдено ни одного товара</td>#}
+                {#</tr>#}
+            {#{% endfor %}#}
+    {#</table>#}
 
     <div class="box_content box_gray main_about">
         <div class="container">

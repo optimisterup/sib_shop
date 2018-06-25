@@ -21,8 +21,6 @@ class OrderController extends Controller
             $client=new PayPalHttpsConnection();
             $headers=$client->connect();
             dump($headers);die;
-
-
         return $this->render('@App/Orders/paypal.html.twig', [
             'headers' => $headers
         ]);
