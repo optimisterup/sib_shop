@@ -1,9 +1,11 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\TransactionOrder;
 use AppBundle\PayPal\PayPal;
 use AppBundle\PayPal\PayPalHttpsConnection;
 use GuzzleHttp\Client;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +23,9 @@ class PayPalController extends Controller
      */
     public function getTokenAction(Request $request)
     {
-        // Параметры нашего запроса
         $requestParams = array(
-            'RETURNURL' => 'http://d6f67d51.ngrok.io/pay/success',
-            'CANCELURL' => 'http://d6f67d51.ngrok.io/pay/cancel_pay'
+            'RETURNURL' => "http://d6f67d51.ngrok.io/pay/success",
+            'CANCELURL' => 'http://d6f67d51.ngrok.io/pay/cancelled'
         );
 
         $orderParams = array(
@@ -46,23 +47,44 @@ class PayPalController extends Controller
 
         $paypal = new PayPal();
         $response = $paypal -> request('SetExpressCheckout',$requestParams + $orderParams + $item);
-//dump($response);die;
+
         if(is_array($response) && $response['ACK'] == 'Success') {
             $token = $response['TOKEN'];
             header( 'Location: https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . urlencode($token) );
             dump($token);die;
         }
-        return $this->redirectToRoute('paid', []);
+        return $this->redirectToRoute('cancel_pay', []);
     }
 
     /**
      * @Route("/success", name="paid")
+     * @Method({"GET","HEAD","POST"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function successPaid()
+    public function successPaid(Request $request)
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('fos_user_security_login');
         }
+
+        if( isset($_GET['token']) && !empty($_GET['token']) ) {
+            $paypal = new Paypal();
+            $checkoutDetails = $paypal -> request('GetExpressCheckoutDetails', array('TOKEN' => $_GET['token']));
+
+            $response = $paypal -> request('DoExpressCheckoutPayment',$checkoutDetails);
+            if( $response['ACK'] == 'Success' || $response['ACK'] == 'SuccessWithWarning') {
+                $transactionId = $response['PAYMENTINFO_0_TRANSACTIONID'];
+                $em=$this->getDoctrine()->getManager();
+                $transaction=new TransactionOrder();
+                $transaction->setPaypalId($transactionId)
+                    ->setDetail($checkoutDetails['COUNTRYCODE']." ".$checkoutDetails['SHIPTOSTREET']." ".$checkoutDetails['SHIPTOSTATE']." ".$checkoutDetails['SHIPTOZIP']." ")
+                    ->setStatus("paid");
+                $em->persist($transaction);
+                $em->flush();
+            }
+        }
+
         return $this->render('default/success.html.twig', []);
     }
 
