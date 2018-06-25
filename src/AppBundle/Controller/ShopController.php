@@ -200,7 +200,6 @@ class ShopController extends Controller
         $countProductsInCart =array_sum($countProduct);
         $currentCartId = $myCart->getId();
 
-//////////////////
         $prod = new CartProduct();
         $form_builder = $this->createFormBuilder($prod);
         $form_builder->add('count', IntegerType::class);
@@ -215,7 +214,6 @@ class ShopController extends Controller
           $em->flush();
             return $this->redirectToRoute('my_cart');
         }
-/////////////////////////////////
 
         return $this->render('default/cart.html.twig', array(
             'countProductsInCart' => $countProductsInCart,
