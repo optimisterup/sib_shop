@@ -23,8 +23,8 @@ class PayPalController extends Controller
     {
         // Параметры нашего запроса
         $requestParams = array(
-            'RETURNURL' => 'http://localhost:2020/pay/success',
-            'CANCELURL' => 'http://localhost:2020/pay/cancel_pay    '
+            'RETURNURL' => 'http://d6f67d51.ngrok.io/pay/success',
+            'CANCELURL' => 'http://d6f67d51.ngrok.io/pay/cancel_pay'
         );
 
         $orderParams = array(
@@ -46,16 +46,14 @@ class PayPalController extends Controller
 
         $paypal = new PayPal();
         $response = $paypal -> request('SetExpressCheckout',$requestParams + $orderParams + $item);
-
+//dump($response);die;
         if(is_array($response) && $response['ACK'] == 'Success') {
             $token = $response['TOKEN'];
-            header( 'Location: https://www.paypal.com/webscr?cmd=_express-checkout&token=' . urlencode($token) );
+            header( 'Location: https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . urlencode($token) );
             dump($token);die;
         }
-
         return $this->redirectToRoute('paid', []);
     }
-
 
     /**
      * @Route("/success", name="paid")
@@ -65,10 +63,8 @@ class PayPalController extends Controller
         if (!$this->getUser()) {
             return $this->redirectToRoute('fos_user_security_login');
         }
-//        $currentUser = $this->getUser();
         return $this->render('default/success.html.twig', []);
     }
-
 
     /**
      * @Route("/cancelled", name="cancel_pay")
@@ -78,7 +74,6 @@ class PayPalController extends Controller
         if (!$this->getUser()) {
             return $this->redirectToRoute('fos_user_security_login');
         }
-//        $currentUser = $this->getUser();
         return $this->render('default/cancelled.html.twig', []);
     }
 }
