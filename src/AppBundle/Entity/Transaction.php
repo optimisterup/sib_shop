@@ -4,9 +4,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
- * @ORM\Table(name="transaction_order")
+ * @ORM\Table(name="transaction")
  */
-class TransactionOrder
+class Transaction
 {
     /**
      * @ORM\Id
@@ -15,7 +15,7 @@ class TransactionOrder
      */
     protected $id;
     /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="transaction")
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="transaction")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", unique=false, nullable=true)
      */
     private $order;
@@ -29,11 +29,12 @@ class TransactionOrder
      * @ORM\Column(type="text")
      */
     private $status;
+
     /**
-     * @param mixed $order
-     * @return TransactionOrder
+     * @param Orders $order
+     * @return $this
      */
-    public function setOrder($order)
+    public function setOrder(Orders $order)
     {
         $this->order = $order;
         return $this;
@@ -51,7 +52,7 @@ class TransactionOrder
     private $detail;
     /**
      * @param mixed $detail
-     * @return TransactionOrder
+     * @return Transaction
      */
     public function setDetail($detail)
     {
@@ -68,7 +69,7 @@ class TransactionOrder
 
     /**
      * @param mixed $paypal_id
-     * @return TransactionOrder
+     * @return Transaction
      */
     public function setPaypalId($paypal_id)
     {
@@ -86,7 +87,7 @@ class TransactionOrder
 
     /**
      * @param mixed $status
-     * @return TransactionOrder
+     * @return Transaction
      */
     public function setStatus($status)
     {

@@ -18,7 +18,7 @@ class OrderDelivary
     protected $id;
 //
 //    /**
-//     * @ORM\OneToMany(targetEntity="Order", mappedBy="delivary")
+//     * @ORM\OneToMany(targetEntity="Orders", mappedBy="delivary")
 //     */
 //    private $order;
 //

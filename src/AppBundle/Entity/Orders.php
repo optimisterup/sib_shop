@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="orders")
  */
-class Order
+class Orders
 {
     /**
      * @ORM\Id
@@ -19,19 +19,23 @@ class Order
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     private $amount;
+
     /**
-     * @ORM\OneToMany(targetEntity="TransactionOrder", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="order")
      */
     private $transaction;
+
     /**
-     * @ORM\OneToMany(targetEntity="CartProduct", mappedBy="order")
+     * @ORM\OneToOne(targetEntity="Cart", inversedBy="orders")
+     * @ORM\JoinColumn(name="cart", referencedColumnName="id")
      */
-    private $cartProduct;
+    private $cart;
+
+
     public function __construct($amount)
     {
         $this->amount = $amount;
         $this->transaction= new ArrayCollection();
-        $this->cartProduct= new ArrayCollection();
     }
     public function getId()
     {
@@ -47,5 +51,33 @@ class Order
     public function getTransaction()
     {
         return $this->transaction;
+    }
+
+    /**
+     * @param mixed $transaction
+     * @return Orders
+     */
+    public function setTransaction($transaction)
+    {
+        $this->transaction = $transaction;
+        return $this;
+    }
+
+    /**
+     * @param mixed $cart
+     * @return Orders
+     */
+    public function setCart($cart)
+    {
+        $this->cart = $cart;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCart()
+    {
+        return $this->cart;
     }
 }

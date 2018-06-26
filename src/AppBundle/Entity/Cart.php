@@ -29,6 +29,12 @@ class Cart
      */
     private $user;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Orders", inversedBy="cart")
+     * @ORM\JoinColumn(name="orders", referencedColumnName="id")
+     */
+    private $orders;
+
     public function __construct()
     {
         $this->cart=new ArrayCollection();
@@ -76,6 +82,26 @@ class Cart
     public function getUser()
     {
         return $this->user;
+    }
+
+
+    /**
+     * @param Orders $orders
+     * @return $this
+     */
+    public function setOrders(Orders $orders)
+    {
+        $orders->setCart($this);
+        $this->orders = $orders;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrders()
+    {
+        return $this->orders;
     }
 
 }

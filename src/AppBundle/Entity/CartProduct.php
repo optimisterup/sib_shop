@@ -38,6 +38,7 @@ class CartProduct
     */
     private $count=1;
 
+
     /**
      * @return mixed
      */
@@ -121,5 +122,7 @@ class CartProduct
         $this->carts = $carts;
         return $this;
     }
+
+
 
 }

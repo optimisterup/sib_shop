@@ -18,11 +18,11 @@ class OrderController extends Controller
      */
     public function newAction()
     {
-            $client=new PayPalHttpsConnection();
-            $headers=$client->connect();
-            dump($headers);die;
+//            $client=new PayPalHttpsConnection();
+//            $headers=$client->connect();
+//            dump($headers);die;
         return $this->render('@App/Orders/paypal.html.twig', [
-            'headers' => $headers
+//            'headers' => $headers
         ]);
     }
 }

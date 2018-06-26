@@ -293,7 +293,7 @@
         {#{{ form_end(form) }}#}
 
     </table>
-    <h2 style="color:red;">Your total sum: {{ totalSumCart }}<a href="{{ path('get_token_paypal', {'amount': totalSumCart}) }}">ORDER</a></h2>
+    <h2 style="color:red;">Your total sum: {{ totalSumCart/70 }}<a href="{{ path('get_token_paypal', {'amounte': totalSumCart}) }}">ORDER</a></h2>
     <div class="box_content box_gray main_about">
         <div class="container">
             <div class="row">

@@ -15,7 +15,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class ShopController extends Controller
 {
-
     /**
      * @Route("/", name="homepage")
      * @Method({"GET","HEAD","POST"})
@@ -252,7 +251,4 @@ class ShopController extends Controller
         }
         return $this->redirectToRoute('homepage', []);
     }
-
-
-
 }

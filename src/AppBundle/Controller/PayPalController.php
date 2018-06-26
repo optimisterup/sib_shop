@@ -1,7 +1,9 @@
 <?php
+
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\TransactionOrder;
+use AppBundle\Entity\Orders;
+use AppBundle\Entity\Transaction;
 use AppBundle\PayPal\PayPal;
 use AppBundle\PayPal\PayPalHttpsConnection;
 use GuzzleHttp\Client;
@@ -24,10 +26,9 @@ class PayPalController extends Controller
     public function getTokenAction(Request $request)
     {
         $requestParams = array(
-            'RETURNURL' => "http://d6f67d51.ngrok.io/pay/success",
-            'CANCELURL' => 'http://d6f67d51.ngrok.io/pay/cancelled'
+            'RETURNURL' => "http://7a724b3d.ngrok.io/pay/success",
+            'CANCELURL' => 'http://7a724b3d.ngrok.io/pay/cancelled'
         );
-
         $currentUser = $this->getUser();
         $myCart = $currentUser->getCart();
         $em = $this->getDoctrine()->getManager();
@@ -42,34 +43,20 @@ class PayPalController extends Controller
             $myProducts[] = $product;
             $countProduct[] = $value->getCount();
             $sumByProducts[]= $product->getPrice()*$value->getCount();
-        }
-        $totalSumCart=array_sum($sumByProducts);
+        }// There is a Limit of the maximum amount of payment
+        $totalSumCart=array_sum($sumByProducts)/700;
         $countProductsInCart =array_sum($countProduct);
-        $totalSumShipping=$countProductsInCart*$totalSumCart;
-//            for ($i=0; $i<count($myProducts);$i++){
-//            $orderParams[] = array(
-//                //total price
-//                "PAYMENTREQUEST_.$i._AMT" => $sumByProducts[$i],
-//                //shipping price
-//                "PAYMENTREQUEST_.$i._SHIPPINGAMT" => "4",
-//                "PAYMENTREQUEST_.$i._CURRENCYCODE" => "USD",
-//                //price without taxes
-//                "PAYMENTREQUEST_.$i._ITEMAMT" => $sumByProducts[$i]-4
-//            );
-//                $orderParams[] = ["PAYMENTREQUEST_.$i._ITEMAMT" =>"3000"];
-//        }
-
+        $totalSumShipping=$countProductsInCart*4;
         $orderParams = array(
-////            total price
+//            total price
             'PAYMENTREQUEST_0_AMT' => $totalSumCart+$totalSumShipping,
-////            shipping price
+//            shipping price
             'PAYMENTREQUEST_0_SHIPPINGAMT' => $totalSumShipping,
             'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',
-////            price without taxes
+//            price without taxes
             'PAYMENTREQUEST_0_ITEMAMT' => $totalSumCart
         );
 //
-        $total=0;
         for ($i=0; $i<count($myProducts);$i++) {
             $item[] = [
                 "L_PAYMENTREQUEST_0_NAME{$i}" => $names[$i],
@@ -77,19 +64,8 @@ class PayPalController extends Controller
                 "L_PAYMENTREQUEST_0_AMT{$i}" => $prices[$i],
                 "L_PAYMENTREQUEST_0_QTY{$i}" => $countProduct[$i]];
         }
-
-//        dump($orderParams);die;
-//        $item = array(
-//            'L_PAYMENTREQUEST_0_NAME0' => 'iPhone',
-//            'L_PAYMENTREQUEST_0_DESC0' => 'White iPhone, 16GB',
-//            'L_PAYMENTREQUEST_0_AMT0' => '496',
-//            'L_PAYMENTREQUEST_0_QTY0' => '1'
-//        );
-
         $paypal = new PayPal();
         $response = $paypal -> request('SetExpressCheckout',$requestParams + $orderParams + $item);
-//dump($myProducts[0]);die;
-//dump($totalSumCart,$total );die;
         if(is_array($response) && $response['ACK'] == 'Success') {
             $token = $response['TOKEN'];
             header( 'Location: https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . urlencode($token) );
@@ -109,19 +85,31 @@ class PayPalController extends Controller
         if (!$this->getUser()) {
             return $this->redirectToRoute('fos_user_security_login');
         }
-        if( isset($_GET['token']) && !empty($_GET['token']) ) {
+        if (isset($_GET['token']) && !empty($_GET['token'])) {
             $paypal = new Paypal();
-            $checkoutDetails = $paypal -> request('GetExpressCheckoutDetails', array('TOKEN' => $_GET['token']));
+            $checkoutDetails = $paypal->request('GetExpressCheckoutDetails', array('TOKEN' => $_GET['token']));
 
-            $response = $paypal -> request('DoExpressCheckoutPayment',$checkoutDetails);
-            if( $response['ACK'] == 'Success' || $response['ACK'] == 'SuccessWithWarning') {
+            $response = $paypal->request('DoExpressCheckoutPayment', $checkoutDetails);
+            if ($response['ACK'] == 'Success' || $response['ACK'] == 'SuccessWithWarning') {
+//                dump($response);die;
                 $transactionId = $response['PAYMENTINFO_0_TRANSACTIONID'];
-                $em=$this->getDoctrine()->getManager();
-                $transaction=new TransactionOrder();
+                $em = $this->getDoctrine()->getManager();
+                $transaction = new Transaction();
                 $transaction->setPaypalId($transactionId)
-                    ->setDetail($checkoutDetails['COUNTRYCODE']."/".$checkoutDetails['SHIPTOSTREET']."/".
-                                       $checkoutDetails['SHIPTOSTATE']."/".$checkoutDetails['SHIPTOZIP'])
+                    ->setDetail($checkoutDetails['COUNTRYCODE'] . "/" . $checkoutDetails['SHIPTOSTREET'] . "/" .
+                        $checkoutDetails['SHIPTOSTATE'] . "/" . $checkoutDetails['SHIPTOZIP'])
                     ->setStatus("paid");
+
+                $order = new Orders($response['PAYMENTINFO_0_AMT']);
+                $em->persist($order);
+                $em->flush();
+
+                $currentUser = $this->getUser();
+                $myCart = $currentUser->getCart();
+                $myCart->setOrders($order);
+                $em->persist($myCart);
+                $em->flush();
+
                 $em->persist($transaction);
                 $em->flush();
             }
